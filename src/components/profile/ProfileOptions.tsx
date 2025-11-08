@@ -15,7 +15,7 @@ const ProfileOptions: FC<Props> = ({ busy, profile }) => {
     <ProfileMenu />
   ) : (
     <Button as={Link} to="sign-up" variant="bordered">
-      Sign Up / In
+      Đăng nhập / Đăng ký
     </Button>
   );
 };

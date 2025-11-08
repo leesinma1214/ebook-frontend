@@ -1,12 +1,31 @@
+import { Button, Input } from "@heroui/react";
 import { type FC } from "react";
+import Book from "../svg/Book";
 
 interface Props {}
 
 const SignUp: FC<Props> = () => {
   return (
-    <div>
-      <h2>Sign Up</h2>
-      {/* Sign up form goes here */}
+    <div className="flex-1 flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center w-96 border-2 p-5 rounded-md">
+        <Book className="w-44 h-44" />
+        <h1 className="text-center text-xl font-semibold">
+          Sách là cội nguồn tri thức vô tận. Đăng ký ngay để khám phá thế giới
+          sách đa dạng và phong phú!
+        </h1>
+
+        <form className="w-full space-y-6 mt-6">
+          <Input
+            type="email"
+            label="Email"
+            placeholder="john@email.com"
+            variant="bordered"
+          />
+          <Button type="submit" className="w-full">
+            Gửi mã xác nhận
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

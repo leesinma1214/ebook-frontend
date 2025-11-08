@@ -53,7 +53,7 @@ const ProfileMenu: FC<Props> = () => {
               className="h-14 gap-2"
             >
               <div>
-                <p className="font-bold">Signed in as</p>
+                <p className="font-bold">Đăng nhập bằng</p>
                 <p className="font-bold">{email}</p>
               </div>
             </DropdownItem>
@@ -67,7 +67,7 @@ const ProfileMenu: FC<Props> = () => {
 
           {role === "author" ? (
             <DropdownSection showDivider>
-              <DropdownItem key="analytics">Analytics</DropdownItem>
+              <DropdownItem key="analytics">Thống kê</DropdownItem>
               <DropdownItem
                 textValue="Create New Book"
                 key="create_new_book"
@@ -80,10 +80,10 @@ const ProfileMenu: FC<Props> = () => {
             <DropdownItem key="empty_item" textValue="empty item" className="p-0"></DropdownItem>
           )}
 
-          <DropdownItem key="configurations">Profile</DropdownItem>
-          <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+          <DropdownItem key="configurations">Trang cá nhân</DropdownItem>
+          <DropdownItem key="help_and_feedback">Trợ giúp & Phản hồi</DropdownItem>
           <DropdownItem onClick={signOut} key="logout" color="danger">
-            Log Out
+            Đăng xuất
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

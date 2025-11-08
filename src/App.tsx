@@ -1,18 +1,17 @@
-import React from "react";
-import { Button } from "@heroui/react";
+import { type FC } from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./views/Home";
+import SignUp from "./views/SignUp";
+import Container from "./components/common/Container";
 
-const App: React.FC = () => {
+const App: FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1 className="text-5xl font-bold text-red-500">
-          Welcome to the eBook Frontend
-        </h1>
-        <Button variant="solid" onPress={() => alert("HeroUI is working!")}>
-          Test HeroUI Button
-        </Button>
-      </header>
-    </div>
+    <Container>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sign-up" element={<SignUp />} />
+      </Routes>
+    </Container>
   );
 };
 

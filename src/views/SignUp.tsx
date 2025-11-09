@@ -1,27 +1,74 @@
 import { Button, Input } from "@heroui/react";
-import { type FC } from "react";
+import { type FC, type FormEventHandler, useState } from "react";
 import Book from "../svg/Book";
+import client from "../api/client";
+import { RiMailCheckLine } from "react-icons/ri";
 
 interface Props {}
 
+const emailRegex = new RegExp(
+  "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+);
+
 const SignUp: FC<Props> = () => {
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [invalidForm, setInvalidForm] = useState(false);
+  const [showSuccessResponse, setShowSuccessResponse] = useState(false);
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (evt) => {
+    evt.preventDefault();
+
+    if (!emailRegex.test(email)) return setInvalidForm(true);
+
+    setInvalidForm(false);
+
+    setBusy(true);
+    try {
+      await client.post("/auth/generate-link", {
+        email,
+      });
+
+      setShowSuccessResponse(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (showSuccessResponse)
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center">
+        <RiMailCheckLine size={80} className="animate-bounce" />
+        <p className="text-lg font-semibold">
+          Email xác nhận đã được gửi! Vui lòng kiểm tra hộp thư đến của bạn.
+        </p>
+      </div>
+    );
+
   return (
     <div className="flex-1 flex items-center justify-center">
       <div className="flex flex-col items-center justify-center w-96 border-2 p-5 rounded-md">
         <Book className="w-44 h-44" />
         <h1 className="text-center text-xl font-semibold">
-          Sách là cội nguồn tri thức vô tận. Đăng ký ngay để khám phá thế giới
-          sách đa dạng và phong phú!
+          Sách là nguồn tri thức vô tận. Đăng ký ngay để khám phá thế giới sách
+          đa dạng và phong phú!
         </h1>
 
-        <form className="w-full space-y-6 mt-6">
+        <form onSubmit={handleSubmit} className="w-full space-y-6 mt-6">
           <Input
-            type="email"
             label="Email"
             placeholder="john@email.com"
             variant="bordered"
+            isInvalid={invalidForm}
+            errorMessage="Invalid email!"
+            value={email}
+            onChange={({ target }) => {
+              setEmail(target.value);
+            }}
           />
-          <Button type="submit" className="w-full">
+          <Button isLoading={busy} type="submit" className="w-full">
             Gửi mã xác nhận
           </Button>
         </form>

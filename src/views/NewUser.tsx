@@ -14,6 +14,8 @@ type NewUserInfo = { name: string; avatar?: File };
 const NewUser: FC<Props> = () => {
   const [userInfo, setUserInfo] = useState<NewUserInfo>({ name: "" });
   const [localAvatar, setLocalAvatar] = useState("");
+  const [invalidForm, setInvalidForm] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value, files } = target;
@@ -34,18 +36,25 @@ const NewUser: FC<Props> = () => {
 
     const formData = new FormData();
 
+    if (userInfo.name.trim().length < 3) {
+      return setInvalidForm(true);
+    } else {
+      setInvalidForm(false);
+    }
+
     formData.append("name", userInfo.name);
     if (userInfo.avatar?.type.startsWith("image")) {
       formData.append("avatar", userInfo.avatar);
     }
 
+    setBusy(true);
     try {
-      const { data } = await client.put("/auth/profile", formData, {
-        withCredentials: true,
-      });
+      const { data } = await client.put("/auth/profile", formData);
       console.log(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -84,9 +93,11 @@ const NewUser: FC<Props> = () => {
             variant="bordered"
             value={userInfo.name}
             onChange={handleChange}
+            isInvalid={invalidForm}
+            errorMessage="Tên phải có ít nhất 3 ký tự"
           />
 
-          <Button type="submit" className="w-full">
+          <Button isLoading={busy} type="submit" className="w-full">
             Đăng ký
           </Button>
         </form>

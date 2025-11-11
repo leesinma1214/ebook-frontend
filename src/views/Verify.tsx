@@ -1,17 +1,22 @@
 import { type FC } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { Spinner } from "@heroui/react";
+import { useDispatch } from "react-redux";
+import { updateProfile } from "../store/auth";
 
 interface Props {}
 
 const Verify: FC<Props> = () => {
   const [searchPrams] = useSearchParams();
   const profileInfoString = searchPrams.get("profile");
+  const dispatch = useDispatch();
 
   if (profileInfoString) {
     try {
       const profile = JSON.parse(profileInfoString);
       if (!profile.signedUp) return <Navigate to="/new-user" />;
+
+      dispatch(updateProfile(profile));
 
       return <Navigate to="/" />;
     } catch (error) {

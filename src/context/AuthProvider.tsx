@@ -1,5 +1,5 @@
 import { createContext, type FC, type ReactNode, useEffect } from "react";
-import { type AuthState, getAuthState, updateProfile } from "../store/auth";
+import { type AuthState, getAuthState, updateAuthStatus, updateProfile } from "../store/auth";
 import client from "../api/client";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -22,9 +22,16 @@ const AuthProvider: FC<Props> = ({ children }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    client.get("/auth/profile").then(({ data }) => {
-      dispatch(updateProfile(data.profile));
-    });
+    client
+      .get("/auth/profile")
+      .then(({ data }) => {
+        dispatch(updateProfile(data.profile));
+        dispatch(updateAuthStatus("authenticated"));
+      })
+      .catch(() => {
+        dispatch(updateProfile(null));
+        dispatch(updateAuthStatus("unauthenticated"));
+      });
   }, []);
 
   return (

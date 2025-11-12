@@ -1,5 +1,10 @@
 import { createContext, type FC, type ReactNode, useEffect } from "react";
-import { type AuthState, getAuthState, updateAuthStatus, updateProfile } from "../store/auth";
+import {
+  type AuthState,
+  getAuthState,
+  updateAuthStatus,
+  updateProfile,
+} from "../store/auth";
 import client from "../api/client";
 import { useDispatch, useSelector } from "react-redux";
 

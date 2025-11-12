@@ -1,7 +1,7 @@
 import { type PayloadAction, createSlice, createSelector } from "@reduxjs/toolkit";
 import { type RootState } from "./index";
 
-interface Profile {
+export interface Profile {
   id: string;
   name?: string;
   email: string;

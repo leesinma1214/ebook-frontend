@@ -8,8 +8,11 @@ import {
 } from "@heroui/react";
 import { type FC } from "react";
 import { Link } from "react-router-dom";
+import { type Profile } from "../../store/auth";
 
-interface Props {}
+interface Props {
+  profile: Profile;
+}
 
 interface LinkProps {
   title: string;
@@ -24,11 +27,9 @@ const DropdownLink: FC<LinkProps> = ({ title, to }) => {
   );
 };
 
-const ProfileMenu: FC<Props> = () => {
-  const name = "John Doe";
-  const email = "john@email.com";
-  const role: "user" | "author" = "user" as "user" | "author";
-  const avatar = "";
+const ProfileMenu: FC<Props> = ({ profile }) => {
+  const { email, role, avatar, name } = profile;
+
   const signOut = () => {};
 
   return (
@@ -77,11 +78,17 @@ const ProfileMenu: FC<Props> = () => {
               </DropdownItem>
             </DropdownSection>
           ) : (
-            <DropdownItem key="empty_item" textValue="empty item" className="p-0"></DropdownItem>
+            <DropdownItem
+              key="empty_item"
+              textValue="empty item"
+              className="p-0"
+            ></DropdownItem>
           )}
 
           <DropdownItem key="configurations">Trang cá nhân</DropdownItem>
-          <DropdownItem key="help_and_feedback">Trợ giúp & Phản hồi</DropdownItem>
+          <DropdownItem key="help_and_feedback">
+            Trợ giúp & Phản hồi
+          </DropdownItem>
           <DropdownItem onClick={signOut} key="logout" color="danger">
             Đăng xuất
           </DropdownItem>

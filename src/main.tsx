@@ -14,8 +14,8 @@ createRoot(document.getElementById("root")!).render(
       <Provider store={store}>
         <AuthProvider>
           <HeroUIProvider>
-          <App />
-        </HeroUIProvider>
+            <App />
+          </HeroUIProvider>
         </AuthProvider>
       </Provider>
     </BrowserRouter>

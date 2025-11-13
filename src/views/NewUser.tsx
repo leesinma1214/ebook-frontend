@@ -6,6 +6,7 @@ import {
 } from "react";
 import { Avatar, Button, Input } from "@heroui/react";
 import client from "../api/client";
+import { parseError } from "../utils/helper";
 
 interface Props {}
 
@@ -52,7 +53,7 @@ const NewUser: FC<Props> = () => {
       const { data } = await client.put("/auth/profile", formData);
       console.log(data);
     } catch (error) {
-      console.log(error);
+      parseError(error);
     } finally {
       setBusy(false);
     }

@@ -5,6 +5,7 @@ import SignUp from "./views/SignUp";
 import Container from "./components/common/Container";
 import Verify from "./views/Verify";
 import NewUser from "./views/NewUser";
+import { Toaster } from "react-hot-toast";
 
 const App: FC = () => {
   return (
@@ -15,6 +16,8 @@ const App: FC = () => {
         <Route path="/verify" element={<Verify />} />
         <Route path="/new-user" element={<NewUser />} />
       </Routes>
+
+      <Toaster />
     </Container>
   );
 };

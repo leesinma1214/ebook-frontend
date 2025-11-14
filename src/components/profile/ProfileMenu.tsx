@@ -58,10 +58,10 @@ const ProfileMenu: FC<Props> = ({ profile, signOut }) => {
               </div>
             </DropdownItem>
             <DropdownItem key="my_library" textValue="library" className="p-0">
-              <DropdownLink title="My Library" to="/library" />
+              <DropdownLink title="Thư Viện" to="/library" />
             </DropdownItem>
             <DropdownItem textValue="orders" key="orders" className="p-0">
-              <DropdownLink title="My Orders" to="/orders" />
+              <DropdownLink title="Giỏ Hàng" to="/orders" />
             </DropdownItem>
           </DropdownSection>
 

@@ -1,10 +1,11 @@
 import { type FC } from "react";
 import useAuth from "../hooks/useAuth";
 import { Avatar, Button } from "@heroui/react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { BsPencilSquare } from "react-icons/bs";
 
 const Profile: FC = () => {
+  const navigate = useNavigate();
   const { profile } = useAuth();
 
   if (!profile) return <Navigate to="/sign-up" />;
@@ -28,7 +29,12 @@ const Profile: FC = () => {
           </p>
         </div>
 
-        <Button className="ml-auto" variant="flat" isIconOnly>
+        <Button
+          onPress={() => navigate("/update-profile")}
+          className="ml-auto"
+          variant="flat"
+          isIconOnly
+        >
           <BsPencilSquare size={20} />
         </Button>
       </div>

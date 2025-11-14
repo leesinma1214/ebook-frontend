@@ -4,9 +4,7 @@ import { Spinner } from "@heroui/react";
 import { useDispatch } from "react-redux";
 import { updateProfile } from "../store/auth";
 
-interface Props {}
-
-const Verify: FC<Props> = () => {
+const Verify: FC = () => {
   const [searchPrams] = useSearchParams();
   const profileInfoString = searchPrams.get("profile");
   const dispatch = useDispatch();
@@ -19,7 +17,7 @@ const Verify: FC<Props> = () => {
       dispatch(updateProfile(profile));
 
       return <Navigate to="/" />;
-    } catch (error) {
+    } catch {
       return <Navigate to="/not-found" />;
     }
   }

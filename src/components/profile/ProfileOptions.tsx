@@ -4,9 +4,7 @@ import ProfileMenu from "./ProfileMenu";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-interface Props {}
-
-const ProfileOptions: FC<Props> = () => {
+const ProfileOptions: FC = () => {
   const { profile, status, signOut } = useAuth();
   if (status === "busy") return <Spinner size="sm" />;
 

@@ -4,13 +4,11 @@ import Book from "../svg/Book";
 import client from "../api/client";
 import { RiMailCheckLine } from "react-icons/ri";
 
-interface Props {}
-
 const emailRegex = new RegExp(
   "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
 );
 
-const SignUp: FC<Props> = () => {
+const SignUp: FC = () => {
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const [invalidForm, setInvalidForm] = useState(false);

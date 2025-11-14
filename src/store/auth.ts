@@ -1,5 +1,4 @@
-import { type PayloadAction, createSlice, createSelector } from "@reduxjs/toolkit";
-import { type RootState } from "./index";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface Profile {
   id: string;
@@ -28,16 +27,12 @@ const slice = createSlice({
     updateProfile(state, { payload }: PayloadAction<Profile | null>) {
       state.profile = payload;
     },
-     updateAuthStatus(state, { payload }: PayloadAction<AuthState["status"]>) {
+    updateAuthStatus(state, { payload }: PayloadAction<AuthState["status"]>) {
       state.status = payload;
     },
   },
 });
 
 export const { updateProfile, updateAuthStatus } = slice.actions;
-export const getAuthState = createSelector(
-  (state: RootState) => state,
-  (state) => state.auth
-);
 
 export default slice.reducer;

@@ -1,9 +1,7 @@
 import { type FC } from "react";
 import useAuth from "../hooks/useAuth";
 
-interface Props {}
-
-const Home: FC<Props> = () => {
+const Home: FC = () => {
   const authStatus = useAuth();
   console.log(authStatus);
 

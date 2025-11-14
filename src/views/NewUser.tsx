@@ -8,11 +8,9 @@ import { Avatar, Button, Input } from "@heroui/react";
 import client from "../api/client";
 import { parseError } from "../utils/helper";
 
-interface Props {}
-
 type NewUserInfo = { name: string; avatar?: File };
 
-const NewUser: FC<Props> = () => {
+const NewUser: FC = () => {
   const [userInfo, setUserInfo] = useState<NewUserInfo>({ name: "" });
   const [localAvatar, setLocalAvatar] = useState("");
   const [invalidForm, setInvalidForm] = useState(false);

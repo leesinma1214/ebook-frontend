@@ -9,4 +9,6 @@ const store = configureStore({ reducer });
 
 export type RootState = ReturnType<typeof store.getState>;
 
+export const getAuthState = (state: RootState) => state.auth;
+
 export default store;

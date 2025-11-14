@@ -12,7 +12,7 @@ import { type Profile } from "../../store/auth";
 
 interface Props {
   profile: Profile;
-  signOut(): void; 
+  signOut(): void;
 }
 
 interface LinkProps {
@@ -84,7 +84,9 @@ const ProfileMenu: FC<Props> = ({ profile, signOut }) => {
             ></DropdownItem>
           )}
 
-          <DropdownItem key="configurations">Trang cá nhân</DropdownItem>
+          <DropdownItem className="p-0" textValue="Profile item" key="profile">
+            <DropdownLink title="Trang cá nhân" to="/profile" />
+          </DropdownItem>
           <DropdownItem key="help_and_feedback">
             Trợ giúp & Phản hồi
           </DropdownItem>

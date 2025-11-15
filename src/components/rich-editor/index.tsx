@@ -51,7 +51,7 @@ const RichEditor: FC<Props> = ({
   });
 
   useEffect(() => {
-    if (loaded && editable) return;
+    if (loaded) return;
 
     if (editor && !editable) {
       editor.setEditable(false);

@@ -9,6 +9,7 @@ import { type ChangeEventHandler, type FC, useState } from "react";
 import { genres, languages } from "../utils/data";
 import PosterSelector from "./PosterSelector";
 import RichEditor from "./rich-editor";
+import { parseDate } from "@internationalized/date";
 
 interface Props {
   title: string;
@@ -115,7 +116,17 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         onChange={handleTextChange}
       />
 
-      <DatePicker label="Ngày xuất bản" showMonthAndYearPickers isRequired />
+      <DatePicker
+        onChange={(date) => {
+          if (date) {
+            setBookInfo({ ...bookInfo, publishedAt: date.toString() });
+          }
+        }}
+        value={bookInfo.publishedAt ? parseDate(bookInfo.publishedAt) : null}
+        label="Ngày xuất bản"
+        showMonthAndYearPickers
+        isRequired
+      />
 
       <Autocomplete
         label="Ngôn Ngữ"

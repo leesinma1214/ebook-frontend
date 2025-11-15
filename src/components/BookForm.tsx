@@ -5,7 +5,7 @@ import {
   DatePicker,
   Input,
 } from "@heroui/react";
-import { type FC } from "react";
+import { type ChangeEventHandler, type FC, useState } from "react";
 import { genres, languages } from "../utils/data";
 import PosterSelector from "./PosterSelector";
 import RichEditor from "./rich-editor";
@@ -16,7 +16,40 @@ interface Props {
   initialState?: unknown;
 }
 
+interface DefaultForm {
+  file?: File;
+  cover?: File;
+  title: string;
+  description: string;
+  publicationName: string;
+  publishedAt?: string;
+  genre: string;
+  language: string;
+  mrp: string;
+  sale: string;
+}
+
+const defaultBookInfo = {
+  title: "",
+  description: "",
+  language: "",
+  genre: "",
+  mrp: "",
+  publicationName: "",
+  sale: "",
+};
+
 const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
+  const [bookInfo, setBookInfo] = useState<DefaultForm>(defaultBookInfo);
+
+  const handleTextChange: ChangeEventHandler<HTMLInputElement> = ({
+    target,
+  }) => {
+    const { value, name } = target;
+    console.log(name, value);
+    setBookInfo({ ...bookInfo, [name]: value });
+  };
+
   return (
     <form className="p-10 space-y-6">
       <h1 className="pb-6 font-semibold text-2xl w-full">{title}</h1>
@@ -31,7 +64,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         />
       </label>
 
-       <PosterSelector />
+      <PosterSelector />
 
       <Input
         type="text"
@@ -43,6 +76,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
 
       <RichEditor
         placeholder="Mô tả sách..."
+        value={bookInfo.description}
         editable
       />
 
@@ -52,6 +86,8 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         label="Tên nhà xuất bản"
         isRequired
         placeholder="Nhà xuất bản Penguin"
+        value={bookInfo.publicationName}
+        onChange={handleTextChange}
       />
 
       <DatePicker label="Ngày xuất bản" showMonthAndYearPickers isRequired />
@@ -60,6 +96,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         label="Ngôn Ngữ"
         placeholder="Chọn ngôn ngữ"
         items={languages}
+        selectedKey={bookInfo.language}
       >
         {(item) => {
           return (
@@ -68,7 +105,12 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         }}
       </Autocomplete>
 
-      <Autocomplete label="Thể loại" placeholder="Chọn thể loại" items={genres}>
+      <Autocomplete
+        selectedKey={bookInfo.genre}
+        label="Thể loại"
+        placeholder="Chọn thể loại"
+        items={genres}
+      >
         {(item) => {
           return (
             <AutocompleteItem key={item.name}>{item.name}</AutocompleteItem>
@@ -86,6 +128,8 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
             label="Giá Bán Tối Thiểu"
             isRequired
             placeholder="0.00"
+            value={bookInfo.mrp}
+            onChange={handleTextChange}
             startContent={
               <div className="pointer-events-none flex items-center">
                 <span className="text-default-400 text-small">$</span>
@@ -98,6 +142,8 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
             label="Giá Bán"
             isRequired
             placeholder="0.00"
+            value={bookInfo.sale}
+            onChange={handleTextChange}
             startContent={
               <div className="pointer-events-none flex items-center">
                 <span className="text-default-400 text-small">$</span>

@@ -37,3 +37,43 @@ export const genres = [
   { name: "Thơ" },
   { name: "Truyện tranh" },
 ];
+
+export const languageList = [
+  "Tiếng Anh",
+  "Tiếng Trung",
+  "Tiếng Tây Ban Nha",
+  "Tiếng Hindi",
+  "Tiếng Pháp",
+  "Tiếng Ả Rập",
+  "Tiếng Urdu",
+  "Tiếng Nga",
+  "Tiếng Bồ Đào Nha",
+  "Tiếng Indo",
+  "Tiếng Đức",
+  "Tiếng Nhật",
+  "Tiếng Việt",
+  "Tiếng Hàn",
+]as const;
+
+export const genreList = [
+  "Giả tưởng",
+  "Kỳ bí",
+  "Gây cấn",
+  "Tình cảm",
+  "Khoa học giả tưởng",
+  "Thần thoại",
+  "Lịch sử",
+  "Kinh dị",
+  "Phá án",
+  "Phiêu lưu",
+  "Thiếu niên",
+  "Hiện thực",
+  "Tiểu sử",
+  "Hồi ký",
+  "Self-help",
+  "Kinh doanh/Tài chính",
+  "Khoa học/Công nghệ",
+  "Du lịch",
+  "Thơ",
+  "Truyện tranh",
+] as const;

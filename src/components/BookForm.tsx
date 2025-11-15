@@ -5,11 +5,17 @@ import {
   DatePicker,
   Input,
 } from "@heroui/react";
-import { type ChangeEventHandler, type FC, type FormEventHandler, useState } from "react";
-import { genres, languages } from "../utils/data";
+import {
+  type ChangeEventHandler,
+  type FC,
+  type FormEventHandler,
+  useState,
+} from "react";
+import { genreList, genres, languageList, languages } from "../utils/data";
 import PosterSelector from "./PosterSelector";
 import RichEditor from "./rich-editor";
 import { parseDate } from "@internationalized/date";
+import { z } from "zod";
 
 interface Props {
   title: string;
@@ -59,6 +65,83 @@ interface BookToSubmit {
   };
 }
 
+const commonBookSchema = {
+  title: z.string().trim().min(5, "Tiêu đề quá ngắn!"),
+  description: z.string().trim().min(5, "Mô tả quá ngắn!"),
+  genre: z.enum(genreList, { message: "Vui lòng chọn thể loại!" }),
+  language: z.enum(languageList, { message: "Vui lòng chọn ngôn ngữ!" }),
+  publicationName: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? "Tên nhà xuất bản không hợp lệ!"
+          : "Không phải chuỗi ký tự",
+    })
+    .trim()
+    .min(3, "Tên nhà xuất bản quá ngắn!"),
+  uploadMethod: z.enum(["aws", "local"], {
+    message: "Phương thức tải lên bị thiếu!",
+  }),
+  publishedAt: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? "Ngày xuất bản bị thiếu!"
+          : "Không phải chuỗi ký tự",
+    })
+    .trim(),
+  price: z
+    .object({
+      mrp: z
+        .number({
+          error: (issue) =>
+            issue.input === undefined
+              ? "Giá bán tối thiểu bị thiếu!"
+              : "Không phải số",
+        })
+        .refine((val) => val > 0, "Giá bán tối thiểu bị thiếu!"),
+      sale: z
+        .number({
+          error: (issue) =>
+            issue.input === undefined ? "Giá bán bị thiếu!" : "Không phải số",
+        })
+        .refine((val) => val > 0, "Giá bán bị thiếu!"),
+    })
+    .refine((price) => price.sale <= price.mrp, "Giá bán không hợp lệ!"),
+};
+
+const fileInfoSchema = z.object({
+  name: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? "Tên file bị thiếu!"
+          : "Không phải chuỗi ký tự",
+    })
+    .min(1, "Tên file bị thiếu!"),
+  type: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? "Loại file bị thiếu!"
+          : "Không phải chuỗi ký tự",
+    })
+    .min(1, "Loại file bị thiếu!"),
+  size: z
+    .number({
+      error: (issue) =>
+        issue.input === undefined
+          ? "Kích thước file bị thiếu!"
+          : "Không phải số",
+    })
+    .refine((val) => val > 0, "Kích thước file không hợp lệ!"),
+});
+
+const newBookSchema = z.object({
+  ...commonBookSchema,
+  fileInfo: fileInfoSchema,
+});
+
 const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
   const [bookInfo, setBookInfo] = useState<DefaultForm>(defaultBookInfo);
   const [cover, setCover] = useState("");
@@ -68,7 +151,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
     target,
   }) => {
     const { value, name } = target;
-    console.log(name, value);
+
     setBookInfo({ ...bookInfo, [name]: value });
   };
 
@@ -128,6 +211,14 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         type: file.type,
       },
     };
+
+    const result = newBookSchema.safeParse(bookToSend);
+    if (!result.success) {
+      const tree = z.treeifyError(result.error);
+      return console.log(tree);
+    }
+
+    console.log(result.data);
   };
 
   const handleBookUpdate = () => {};
@@ -151,10 +242,16 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
           name="file"
           id="file"
           onChange={handleFileChange}
+          onInvalid={(e) => {
+            e.currentTarget.setCustomValidity("Vui lòng chọn file");
+          }}
+          onInput={(e) => {
+            e.currentTarget.setCustomValidity("");
+          }}
         />
       </label>
 
-      <PosterSelector 
+      <PosterSelector
         src={cover}
         name="cover"
         fileName={bookInfo.cover?.name}
@@ -169,6 +266,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         placeholder="Nghĩ Giàu và Làm Giàu"
         value={bookInfo.title}
         onChange={handleTextChange}
+        errorMessage="Vui lòng điền tiêu đề sách."
       />
 
       <RichEditor
@@ -186,6 +284,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         placeholder="Nhà xuất bản Penguin"
         value={bookInfo.publicationName}
         onChange={handleTextChange}
+        errorMessage="Vui lòng điền tên nhà xuất bản."
       />
 
       <DatePicker
@@ -198,6 +297,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         label="Ngày xuất bản"
         showMonthAndYearPickers
         isRequired
+        errorMessage="Vui lòng chọn ngày xuất bản."
       />
 
       <Autocomplete
@@ -210,27 +310,22 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
       >
         {languages.map((item) => {
           return (
-            <AutocompleteItem key={item.name}>
-              {item.name}
-            </AutocompleteItem>
+            <AutocompleteItem key={item.name}>{item.name}</AutocompleteItem>
           );
         })}
       </Autocomplete>
 
       <Autocomplete
-        selectedKey={bookInfo.genre}
         label="Thể loại"
         placeholder="Chọn thể loại"
-        defaultSelectedKey={bookInfo.language}
+        defaultSelectedKey={bookInfo.genre}
         onSelectionChange={(key = "") => {
-          setBookInfo({ ...bookInfo, language: key as string });
+          setBookInfo({ ...bookInfo, genre: key as string });
         }}
       >
         {genres.map((item) => {
           return (
-            <AutocompleteItem key={item.name}>
-              {item.name}
-            </AutocompleteItem>
+            <AutocompleteItem key={item.name}>{item.name}</AutocompleteItem>
           );
         })}
       </Autocomplete>
@@ -247,6 +342,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
             placeholder="0.00"
             value={bookInfo.mrp}
             onChange={handleTextChange}
+            errorMessage="Vui lòng nhập giá bán tối thiểu."
             startContent={
               <div className="pointer-events-none flex items-center">
                 <span className="text-default-400 text-small">$</span>
@@ -261,6 +357,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
             placeholder="0.00"
             value={bookInfo.sale}
             onChange={handleTextChange}
+            errorMessage="Vui lòng nhập giá bán."
             startContent={
               <div className="pointer-events-none flex items-center">
                 <span className="text-default-400 text-small">$</span>

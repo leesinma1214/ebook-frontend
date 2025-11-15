@@ -185,12 +185,28 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
 
     // Validate book file (must be epub type)
     if (file?.type !== "application/epub+zip") {
-      return console.log("Chỉ hỗ trợ định dạng .epub");
+      return setErrors({
+        ...errors,
+        file: ["Chỉ hỗ trợ định dạng .epub"],
+      });
+    } else {
+      setErrors({
+        ...errors,
+        file: undefined,
+      });
     }
 
     // Validate cover file
     if (cover && !cover.type.startsWith("image/")) {
-      return console.log("Vui lòng chọn một ảnh bìa hợp lệ.");
+      return setErrors({
+        ...errors,
+        cover: ["Vui lòng chọn một ảnh bìa hợp lệ."],
+      });
+    } else {
+      setErrors({
+        ...errors,
+        cover: undefined,
+      });
     }
 
     if (cover) {
@@ -219,7 +235,17 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
 
     const result = newBookSchema.safeParse(bookToSend);
     if (!result.success) {
-      return setErrors(result.error.flatten().fieldErrors);
+      const fieldErrors: Record<string, string[]> = {};
+      result.error.issues.forEach((issue) => {
+        const path = issue.path[0];
+        if (path && typeof path === 'string') {
+          if (!fieldErrors[path]) {
+            fieldErrors[path] = [];
+          }
+          fieldErrors[path].push(issue.message);
+        }
+      });
+      return setErrors(fieldErrors);
     }
 
     console.log(result.data);
@@ -238,27 +264,27 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
     <form onSubmit={handleSubmit} className="p-10 space-y-6">
       <h1 className="pb-6 font-semibold text-2xl w-full">{title}</h1>
 
-      <label htmlFor="file">
-        <span>Chọn file: </span>
-        <input
-          accept="application/epub+zip"
-          type="file"
-          name="file"
-          id="file"
-          onChange={handleFileChange}
-          onInvalid={(e) => {
-            e.currentTarget.setCustomValidity("Vui lòng chọn file");
-          }}
-          onInput={(e) => {
-            e.currentTarget.setCustomValidity("");
-          }}
-        />
-      </label>
+      <div>
+        <label className={clsx(errors?.file && "text-red-400")} htmlFor="file">
+          <span>Chọn File: </span>
+          <input
+            accept="application/epub+zip"
+            type="file"
+            name="file"
+            id="file"
+            onChange={handleFileChange}
+          />
+        </label>
+
+        <ErrorList errors={errors?.file} />
+      </div>
 
       <PosterSelector
         src={cover}
         name="cover"
         fileName={bookInfo.cover?.name}
+        isInvalid={errors?.cover ? true : false}
+        errorMessage={<ErrorList errors={errors?.cover} />}
         onChange={handleFileChange}
       />
 

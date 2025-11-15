@@ -7,6 +7,8 @@ import {
 } from "@heroui/react";
 import { type FC } from "react";
 import { genres, languages } from "../utils/data";
+import PosterSelector from "./PosterSelector";
+import RichEditor from "./rich-editor";
 
 interface Props {
   title: string;
@@ -29,7 +31,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         />
       </label>
 
-      {/* Poster Selector */}
+       <PosterSelector />
 
       <Input
         type="text"
@@ -39,7 +41,10 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         placeholder="Nghĩ Giàu và Làm Giàu"
       />
 
-      {/* About For Book */}
+      <RichEditor
+        placeholder="Mô tả sách..."
+        editable
+      />
 
       <Input
         name="publicationName"

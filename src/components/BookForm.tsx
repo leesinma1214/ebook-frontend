@@ -28,7 +28,7 @@ interface Props {
 }
 
 interface DefaultForm {
-  file?: File;
+  file?: File | null;
   cover?: File;
   title: string;
   description: string;
@@ -269,6 +269,9 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle, onSubmit }) => {
       }
 
       await onSubmit(formData, file);
+      setBookInfo({ ...defaultBookInfo, file: null });
+      setCover("");
+
     } catch (error) {
       parseError(error);
     } finally {

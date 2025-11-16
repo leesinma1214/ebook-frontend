@@ -18,11 +18,13 @@ import { parseDate } from "@internationalized/date";
 import { z } from "zod";
 import ErrorList from "./common/ErrorList";
 import clsx from "clsx";
+import { parseError } from "../utils/helper";
 
 interface Props {
   title: string;
   submitBtnTitle: string;
   initialState?: unknown;
+  onSubmit(formData: FormData): Promise<void>;
 }
 
 interface DefaultForm {
@@ -144,9 +146,10 @@ const newBookSchema = z.object({
   fileInfo: fileInfoSchema,
 });
 
-const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
+const BookForm: FC<Props> = ({ title, submitBtnTitle, onSubmit }) => {
   const [bookInfo, setBookInfo] = useState<DefaultForm>(defaultBookInfo);
   const [cover, setCover] = useState("");
+  const [busy, setBusy] = useState(false);
   const [isForUpdate, setIsForUpdate] = useState(false);
   const [errors, setErrors] = useState<{
     [key: string]: string[] | undefined;
@@ -169,86 +172,108 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
 
     const file = files[0];
 
-    if (name === "cover" && file?.size) {
-      setCover(URL.createObjectURL(file));
-    } else {
-      setCover("");
+    if (name === "cover") {
+      try {
+        setCover(URL.createObjectURL(file));
+      } catch (error) {
+        setCover("");
+      }
     }
 
     setBookInfo({ ...bookInfo, [name]: file });
   };
 
-  const handleBookPublish = () => {
-    const formData = new FormData();
+  const handleBookPublish = async () => {
+    setBusy(true);
+    try {
+      const formData = new FormData();
 
-    const { file, cover } = bookInfo;
+      const { file, cover } = bookInfo;
 
-    // Validate book file (must be epub type)
-    if (file?.type !== "application/epub+zip") {
-      return setErrors({
-        ...errors,
-        file: ["Chỉ hỗ trợ định dạng .epub"],
-      });
-    } else {
-      setErrors({
-        ...errors,
-        file: undefined,
-      });
-    }
+      // Validate book file exists and is epub type
+      if (!file) {
+        return setErrors({
+          ...errors,
+          file: ["Chọn file sách để tiếp tục."],
+        });
+      }
 
-    // Validate cover file
-    if (cover && !cover.type.startsWith("image/")) {
-      return setErrors({
-        ...errors,
-        cover: ["Vui lòng chọn một ảnh bìa hợp lệ."],
-      });
-    } else {
-      setErrors({
-        ...errors,
-        cover: undefined,
-      });
-    }
+      if (file.type !== "application/epub+zip") {
+        return setErrors({
+          ...errors,
+          file: ["Vui lòng chọn file (.epub) hợp lệ."],
+        });
+      }
 
-    if (cover) {
-      formData.append("cover", cover);
-    }
+      // Validate cover file
+      if (cover && !cover.type.startsWith("image/")) {
+        return setErrors({
+          ...errors,
+          cover: ["Vui lòng chọn file bìa hợp lệ."],
+        });
+      }
 
-    // validate data for book creation
-    const bookToSend: BookToSubmit = {
-      title: bookInfo.title,
-      description: bookInfo.description,
-      genre: bookInfo.genre,
-      language: bookInfo.language,
-      publicationName: bookInfo.publicationName,
-      uploadMethod: "aws",
-      publishedAt: bookInfo.publishedAt,
-      price: {
-        mrp: Number(bookInfo.mrp),
-        sale: Number(bookInfo.sale),
-      },
-      fileInfo: {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-      },
-    };
+      if (cover) {
+        formData.append("cover", cover);
+      }
 
-    const result = newBookSchema.safeParse(bookToSend);
-    if (!result.success) {
-      const fieldErrors: Record<string, string[]> = {};
-      result.error.issues.forEach((issue) => {
-        const path = issue.path[0];
-        if (path && typeof path === 'string') {
+      // validate data for book creation
+      const bookToSend: BookToSubmit = {
+        title: bookInfo.title,
+        description: bookInfo.description,
+        genre: bookInfo.genre,
+        language: bookInfo.language,
+        publicationName: bookInfo.publicationName,
+        uploadMethod: "aws",
+        publishedAt: bookInfo.publishedAt,
+        price: {
+          mrp: Number(bookInfo.mrp),
+          sale: Number(bookInfo.sale),
+        },
+        fileInfo: {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+        },
+      };
+
+      const result = newBookSchema.safeParse(bookToSend);
+      if (!result.success) {
+        const fieldErrors: Record<string, string[]> = {};
+        result.error.issues.forEach((issue) => {
+          // Join the full path for nested errors (e.g., "price.mrp", "fileInfo.name")
+          const path = issue.path.join(".") || "general";
           if (!fieldErrors[path]) {
             fieldErrors[path] = [];
           }
           fieldErrors[path].push(issue.message);
-        }
-      });
-      return setErrors(fieldErrors);
-    }
+        });
+        return setErrors(fieldErrors);
+      }
 
-    console.log(result.data);
+      if (result.data.uploadMethod === "local") {
+        formData.append("book", file);
+      }
+
+      for (let key in bookToSend) {
+        type keyType = keyof typeof bookToSend;
+        const value = bookToSend[key as keyType];
+
+        if (typeof value === "string") {
+          formData.append(key, value);
+        }
+
+        if (typeof value === "object") {
+          formData.append(key, JSON.stringify(value));
+        }
+      }
+
+      await onSubmit(formData);
+    } catch (error) {
+      parseError(error);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const handleBookUpdate = () => {};
@@ -415,7 +440,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle }) => {
         </div>
       </div>
 
-      <Button type="submit" className="w-full">
+      <Button isLoading={busy} type="submit" className="w-full">
         {submitBtnTitle}
       </Button>
     </form>

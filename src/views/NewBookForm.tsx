@@ -5,9 +5,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const NewBookForm: FC = () => {
-  const handleSubmit = async (data: FormData, file: File) => {
+  const handleSubmit = async (data: FormData, file?: File | null) => {
     const res = await client.post("/book/create", data);
-    if (res.data) {
+    if (res.data && file) {
       axios.put(res.data, file, {
         headers: {
           "Content-Type": "application/octet-stream",

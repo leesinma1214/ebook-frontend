@@ -24,7 +24,7 @@ interface Props {
   title: string;
   submitBtnTitle: string;
   initialState?: unknown;
-  onSubmit(formData: FormData): Promise<void>;
+  onSubmit(formData: FormData, file: File): Promise<void>;
 }
 
 interface DefaultForm {
@@ -268,7 +268,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle, onSubmit }) => {
         }
       }
 
-      await onSubmit(formData);
+      await onSubmit(formData, file);
     } catch (error) {
       parseError(error);
     } finally {
@@ -406,7 +406,7 @@ const BookForm: FC<Props> = ({ title, submitBtnTitle, onSubmit }) => {
             <Input
               name="mrp"
               type="number"
-              label="Giá Bán Tối Thiểu"
+              label="Giá Bán Tối Đa"
               isRequired
               placeholder="0.00"
               value={bookInfo.mrp}

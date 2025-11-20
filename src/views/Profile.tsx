@@ -39,7 +39,11 @@ const Profile: FC = () => {
               <Link className="text-xs underline" to="/author-registration">
                 Trở thành tác giả
               </Link>
-            ) : null}
+            ) : (
+              <Link className="text-xs underline" to="/update-author">
+                Cập Nhật Thông Tin Tác Giả
+              </Link>
+            )}
           </div>
         </div>
 

@@ -9,9 +9,7 @@ import { parseError } from "../utils/helper";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import toast from "react-hot-toast";
 
-interface Props {}
-
-const UpdateAuthor: FC<Props> = () => {
+const UpdateAuthor: FC = () => {
   const [busy, setBusy] = useState(true);
   const [profileInfo, setProfileInfo] = useState<InitialState>();
   const { profile } = useAuth();
@@ -36,7 +34,7 @@ const UpdateAuthor: FC<Props> = () => {
     };
 
     fetchAuthorInfo();
-  }, []);
+  }, [profile?.authorId]);
 
   if (busy) return <LoadingSpinner />;
 

@@ -200,7 +200,7 @@ const BookForm: FC<Props> = ({
     if (name === "cover") {
       try {
         setCover(URL.createObjectURL(file));
-      } catch (error) {
+      } catch {
         setCover("");
       }
     }
@@ -280,7 +280,7 @@ const BookForm: FC<Props> = ({
         formData.append("book", file);
       }
 
-      for (let key in bookToSend) {
+      for (const key in bookToSend) {
         type keyType = keyof typeof bookToSend;
         const value = bookToSend[key as keyType];
 
@@ -364,11 +364,10 @@ const BookForm: FC<Props> = ({
         };
       }
 
-      const result = newBookSchema.safeParse(bookToSend);
+      const result = updateBookSchema.safeParse(bookToSend);
       if (!result.success) {
         const fieldErrors: Record<string, string[]> = {};
         result.error.issues.forEach((issue) => {
-          // Join the full path for nested errors (e.g., "price.mrp", "fileInfo.name")
           const path = issue.path.join(".") || "general";
           if (!fieldErrors[path]) {
             fieldErrors[path] = [];
@@ -382,7 +381,7 @@ const BookForm: FC<Props> = ({
         formData.append("book", file);
       }
 
-      for (let key in bookToSend) {
+      for (const key in bookToSend) {
         type keyType = keyof typeof bookToSend;
         const value = bookToSend[key as keyType];
 
@@ -439,7 +438,6 @@ const BookForm: FC<Props> = ({
       setIsForUpdate(true);
     }
   }, [initialState]);
-
 
   return (
     <form onSubmit={handleSubmit} className="p-10 space-y-6">

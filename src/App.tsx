@@ -14,6 +14,7 @@ import NewBookForm from "./views/NewBookForm";
 import UpdateBookForm from "./views/UpdateBookForm";
 import NewAuthorRegistration from "./views/NewAuthorRegistration";
 import UpdateAuthor from "./views/UpdateAuthor";
+import Author from "./routes/Author";
 
 const App: FC = () => {
   return (
@@ -30,9 +31,11 @@ const App: FC = () => {
             path="/author-registration"
             element={<NewAuthorRegistration />}
           />
-          <Route path="/update-author" element={<UpdateAuthor />} />
-          <Route path="/create-new-book" element={<NewBookForm />} />
-          <Route path="/update-book/:slug" element={<UpdateBookForm />} />
+          <Route element={<Author />}>
+            <Route path="/update-author" element={<UpdateAuthor />} />
+            <Route path="/create-new-book" element={<NewBookForm />} />
+            <Route path="/update-book/:slug" element={<UpdateBookForm />} />
+          </Route>
         </Route>
 
         <Route element={<Guest />}>

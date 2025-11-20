@@ -53,6 +53,7 @@ const newAuthorSchema = z.object({
 const AuthorForm: FC<Props> = ({ initialState, btnTitle, onSubmit }) => {
   const [socialLinks, setSocialLinks] = useState([""]);
   const [about, setAbout] = useState("");
+  const [busy, setBusy] = useState(false);
   const [errors, setErrors] = useState<{
     [key: string]: string[] | undefined;
   }>();
@@ -77,6 +78,7 @@ const AuthorForm: FC<Props> = ({ initialState, btnTitle, onSubmit }) => {
 
   const handleSubmit = async () => {
     try {
+      setBusy(true);
       const links: string[] = [];
 
       socialLinks.forEach((link) => {
@@ -107,6 +109,8 @@ const AuthorForm: FC<Props> = ({ initialState, btnTitle, onSubmit }) => {
       await onSubmit(result.data);
     } catch (error) {
       parseError(error);
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -173,7 +177,9 @@ const AuthorForm: FC<Props> = ({ initialState, btnTitle, onSubmit }) => {
         </div>
       </div>
 
-      <Button onPress={handleSubmit}>{btnTitle}</Button>
+      <Button isLoading={busy} onPress={handleSubmit}>
+        {btnTitle}
+      </Button>
     </div>
   );
 };

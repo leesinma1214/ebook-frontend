@@ -18,7 +18,7 @@ const Navbar: FC = () => {
       <NavbarBrand>
         <Link to="/" className="flex items-center justify-center space-x-2">
           <FaBookReader size={24} />
-          <p className="font-bold text-inherit">DIGIBook</p>
+          <p className="font-bold text-inherit">DiGiRead</p>
         </Link>
       </NavbarBrand>
 

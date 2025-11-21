@@ -8,6 +8,8 @@ const Home: FC = () => {
     <div className="space-y-10 px-5 lg:p-0">
       <HeroSection />
       <BookByGenre genre="Hiện thực" />
+      <BookByGenre genre="Gay cấn" />
+      <BookByGenre genre="Khoa học giả tưởng" />
     </div>
   );
 };

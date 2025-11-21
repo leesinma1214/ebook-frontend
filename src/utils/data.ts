@@ -18,7 +18,7 @@ export const languages = [
 export const genres = [
   { name: "Giả tưởng" },
   { name: "Kỳ bí" },
-  { name: "Gây cấn" },
+  { name: "Gay cấn" },
   { name: "Tình cảm" },
   { name: "Khoa học giả tưởng" },
   { name: "Thần thoại" },
@@ -58,7 +58,7 @@ export const languageList = [
 export const genreList = [
   "Giả tưởng",
   "Kỳ bí",
-  "Gây cấn",
+  "Gay cấn",
   "Tình cảm",
   "Khoa học giả tưởng",
   "Thần thoại",

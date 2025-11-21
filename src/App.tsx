@@ -16,12 +16,14 @@ import NewAuthorRegistration from "./views/NewAuthorRegistration";
 import UpdateAuthor from "./views/UpdateAuthor";
 import Author from "./routes/Author";
 import NotFound from "./views/NotFound";
+import SingleBook from "./views/SingleBook";
 
 const App: FC = () => {
   return (
     <Container>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/book/:slug" element={<SingleBook />} />
         <Route path="/verify" element={<Verify />} />
         <Route path="/not-found" element={<NotFound />} />
 

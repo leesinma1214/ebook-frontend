@@ -1,6 +1,8 @@
 import { type FC, useEffect, useState } from "react";
 import client from "../api/client";
 import { parseError } from "../utils/helper";
+import { Divider } from "@heroui/react";
+import DividerWithTitle from "./common/DividerWithTitle";
 
 interface Props {
   genre: string;
@@ -40,7 +42,11 @@ const BookByGenre: FC<Props> = ({ genre }) => {
 
   console.log(books);
 
-  return <div></div>;
+  return (
+    <div>
+      <DividerWithTitle title={genre} />
+    </div>
+  );
 };
 
 export default BookByGenre;

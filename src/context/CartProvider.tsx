@@ -1,5 +1,10 @@
 import { createContext, type FC, type ReactNode, useState } from "react";
-import { type cartItem, updateCartId, updateCartItems } from "../store/cart";
+import {
+  type cartItem,
+  getCartState,
+  updateCartId,
+  updateCartItems,
+} from "../store/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "../store";
 import useAuth from "../hooks/useAuth";
@@ -15,17 +20,19 @@ export interface ICartContext {
   id?: string;
   items: cartItem[];
   pending: boolean;
+  totalCount: number;
   updateCart(item: cartItem): void;
 }
 
 export const CartContext = createContext<ICartContext>({
   items: [],
   pending: false,
+  totalCount: 0,
   updateCart() {},
 });
 
 const CartProvider: FC<Props> = ({ children }) => {
-  const cart = useSelector((state: RootState) => state.cart);
+  const cart = useSelector(getCartState);
   const dispatch = useDispatch();
   const { profile } = useAuth();
   const [pending, setPending] = useState(false);
@@ -54,7 +61,14 @@ const CartProvider: FC<Props> = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ items: cart.items, pending, updateCart }}>
+    <CartContext.Provider
+      value={{
+        items: cart.items,
+        totalCount: cart.totalCount,
+        pending,
+        updateCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import AuthProvider from "./context/AuthProvider.tsx";
+import CartProvider from "./context/CartProvider.tsx";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -15,9 +16,11 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Provider store={store}>
         <AuthProvider>
-          <HeroUIProvider>
-            <App />
-          </HeroUIProvider>
+          <CartProvider>
+            <HeroUIProvider>
+              <App />
+            </HeroUIProvider>
+          </CartProvider>  
         </AuthProvider>
       </Provider>
     </BrowserRouter>

@@ -1,16 +1,24 @@
-import { createContext, type FC, type ReactNode, useState } from "react";
+import { createContext, type FC, type ReactNode, useEffect, useState } from "react";
 import {
   type cartItem,
+  type CartItemAPI,
   getCartState,
   updateCartId,
   updateCartItems,
+  updateCartState,
 } from "../store/cart";
 import { useDispatch, useSelector } from "react-redux";
-import { type RootState } from "../store";
 import useAuth from "../hooks/useAuth";
 import client from "../api/client";
 import toast from "react-hot-toast";
 import { parseError } from "../utils/helper";
+
+interface CartApiResponse {
+  cart: {
+    id: string;
+    items: CartItemAPI[];
+  }
+}
 
 interface Props {
   children: ReactNode;
@@ -59,6 +67,16 @@ const CartProvider: FC<Props> = ({ children }) => {
         });
     }
   };
+
+  useEffect(() => {
+    const fetchCartInfo = async () => {
+      const { data } = await client.get<CartApiResponse>("/cart");
+      dispatch(updateCartState({ id: data.cart.id, items: data.cart.items }));
+    };
+
+    fetchCartInfo();
+  }, []);
+
 
   return (
     <CartContext.Provider

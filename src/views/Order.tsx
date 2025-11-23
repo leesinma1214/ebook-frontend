@@ -1,6 +1,4 @@
 import { type FC, useEffect, useState } from "react";
-import dateFormat from "dateformat";
-
 import client from "../api/client";
 import { formatPrice, parseError } from "../utils/helper";
 import Skeletons from "../components/skeletons";
@@ -47,6 +45,11 @@ const Orders: FC = () => {
     fetchOrders();
   }, []);
 
+  const formatVietnameseDate = (date: string) => {
+    const d = new Date(date);
+    return `Ngày ${d.getDate()} Tháng ${d.getMonth() + 1} Năm ${d.getFullYear()}`;
+  };
+
   if (pending) return <Skeletons.Orders />;
 
   return (
@@ -55,7 +58,7 @@ const Orders: FC = () => {
       {orders?.map((order) => {
         return (
           <div key={order.id}>
-            <DividerWithTitle title={dateFormat(order.date, "mmmm d yyyy")} />
+            <DividerWithTitle title={formatVietnameseDate(order.date)} />
             {order.orderItem.map((product) => {
               return (
                 <div key={product.id}>

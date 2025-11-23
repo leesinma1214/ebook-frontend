@@ -49,7 +49,11 @@ const SingleBook: FC = () => {
       <RecommendedSection id={bookDetails?.id} />
 
       {/* Review Section */}
-      <ReviewSection reviews={[]} title={`${bookDetails?.title} Đánh giá`} />
+      <ReviewSection
+        id={bookDetails?.id}
+        reviews={reviews}
+        title={`${bookDetails?.title} Đánh giá`}
+      />
     </div>
   );
 };

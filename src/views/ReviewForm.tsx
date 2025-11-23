@@ -1,13 +1,18 @@
 import { Button } from "@heroui/react";
-import { type FC, useState } from "react";
+import { type FC, type FormEventHandler, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import RichEditor from "../components/rich-editor";
+import toast from "react-hot-toast";
+import client from "../api/client";
+import { parseError } from "../utils/helper";
 
 interface Props {}
 
 const ReviewForm: FC<Props> = () => {
   const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
   const { bookId } = useParams();
 
   const updateRatingChanges = (rating: number) => {
@@ -15,10 +20,32 @@ const ReviewForm: FC<Props> = () => {
     setSelectedRatings(newRatings);
   };
 
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (evt) => {
+    evt.preventDefault();
+
+    if (!selectedRatings.length)
+      return toast.error("Vui lòng chọn đánh giá sao.");
+
+    try {
+      setLoading(true);
+      await client.post("/review", {
+        bookId,
+        rating: selectedRatings.length,
+        content,
+      });
+
+      toast.success("Cảm ơn bạn đã để lại đánh giá.");
+    } catch (error) {
+      parseError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const ratings = Array(5).fill("");
 
   return (
-    <form className="p-5 space-y-6">
+    <form onSubmit={handleSubmit} className="p-5 space-y-6">
       {ratings.map((_, index) => {
         return (
           <Button
@@ -27,7 +54,7 @@ const ReviewForm: FC<Props> = () => {
             variant="light"
             radius="full"
             key={index}
-            onPress={() => updateRatingChanges(index + 1)}
+            onClick={() => updateRatingChanges(index + 1)}
           >
             {selectedRatings[index] === "selected" ? (
               <FaStar size={24} />
@@ -38,9 +65,16 @@ const ReviewForm: FC<Props> = () => {
         );
       })}
 
-      <RichEditor placeholder="Viết về cuốn sách..." />
+      <RichEditor
+        value={content}
+        onChange={setContent}
+        placeholder="Viết thứ gì đấy về sách..."
+        editable
+      />
 
-      <Button type="submit">Đánh giá</Button>
+      <Button isLoading={loading} type="submit">
+        Đăng đánh giá
+      </Button>
     </form>
   );
 };

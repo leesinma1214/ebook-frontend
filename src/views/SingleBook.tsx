@@ -5,6 +5,7 @@ import { parseError } from "../utils/helper";
 import BookDetail, { type Book } from "../components/BookDetail";
 import Skeletons from "../components/skeletons";
 import ReviewSection, { type Review } from "../components/ReviewSection";
+import RecommendedSection from "../components/RecommendedSection";
 
 const fetchBookReviews = async (id: string) => {
   const { data } = await client.get("/review/list/" + id);
@@ -45,6 +46,8 @@ const SingleBook: FC = () => {
     <div className="p-5 lg:p-0" space-y-6>
       <BookDetail book={bookDetails} />
 
+      <RecommendedSection id={bookDetails?.id} />
+      
       {/* Review Section */}
       <ReviewSection
         reviews={reviews}

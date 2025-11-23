@@ -43,7 +43,7 @@ const PaymentSuccess: FC = () => {
     fetchOrderDetail();
   }, [sessionId]);
 
-    if (busy) return <Skeletons.Payment />;
+  if (busy) return <Skeletons.Payment />;
 
   return (
     <div className="lg:p-0 p-5">

@@ -8,6 +8,7 @@ export interface Profile {
   avatar?: string;
   signedUp: boolean;
   authorId?: string;
+  books?: string[];
 }
 
 export interface AuthState {

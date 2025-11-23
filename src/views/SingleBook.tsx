@@ -4,6 +4,12 @@ import client from "../api/client";
 import { parseError } from "../utils/helper";
 import BookDetail, { type Book } from "../components/BookDetail";
 import Skeletons from "../components/skeletons";
+import ReviewSection from "../components/ReviewSection";
+
+const fetchBookReviews = async (id: string) => {
+  const { data } = await client.get("/review/list/" + id);
+  return data.reviews;
+};
 
 const SingleBook: FC = () => {
   const [bookDetails, setBookDetails] = useState<Book>();
@@ -15,6 +21,8 @@ const SingleBook: FC = () => {
       try {
         const { data } = await client.get("/book/details/" + slug);
         setBookDetails(data.book);
+        const reviews = await fetchBookReviews(data.book.id);
+        console.log(reviews);
       } catch (error) {
         parseError(error);
       } finally {
@@ -33,8 +41,11 @@ const SingleBook: FC = () => {
     );
 
   return (
-    <div className="p-5 lg:p-0">
+    <div className="p-5 lg:p-0" space-y-6>
       <BookDetail book={bookDetails} />
+
+      {/* Review Section */}
+      <ReviewSection title={`${bookDetails?.title} Đánh giá`} />
     </div>
   );
 };

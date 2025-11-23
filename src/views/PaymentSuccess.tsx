@@ -3,8 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import client from "../api/client";
 import { formatPrice, parseError } from "../utils/helper";
 import { Divider } from "@heroui/react";
-
-interface Props {}
+import Skeletons from "../components/skeletons";
 
 interface OrderItem {
   id: string;
@@ -21,7 +20,7 @@ interface Order {
   totalAmount: string;
 }
 
-const PaymentSuccess: FC<Props> = () => {
+const PaymentSuccess: FC = () => {
   const [busy, setBusy] = useState(true);
   const [order, setOrder] = useState<Order>();
   const [searchParams] = useSearchParams();
@@ -43,6 +42,8 @@ const PaymentSuccess: FC<Props> = () => {
 
     fetchOrderDetail();
   }, [sessionId]);
+
+    if (busy) return <Skeletons.Payment />;
 
   return (
     <div className="lg:p-0 p-5">

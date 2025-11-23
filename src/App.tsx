@@ -20,6 +20,7 @@ import SingleBook from "./views/SingleBook";
 import Cart from "./views/Cart";
 import PaymentSuccess from "./views/PaymentSuccess";
 import Orders from "./views/Order";
+import ReviewForm from "./views/ReviewForm";
 
 const App: FC = () => {
   return (
@@ -37,6 +38,7 @@ const App: FC = () => {
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/update-profile" element={<UpdateProfile />} />
           <Route path="/new-user" element={<NewUser />} />
+          <Route path="/rate/:bookId" element={<ReviewForm />} />
           <Route
             path="/author-registration"
             element={<NewAuthorRegistration />}

@@ -1,21 +1,56 @@
-import { type FC, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import client from "../api/client";
 import { parseError } from "../utils/helper";
+import Skeletons from "../components/skeletons";
 
-const Orders: FC= () => {
+interface OrderItem {
+  id: string;
+  title: string;
+  slug: string;
+  cover?: string;
+  qty: number;
+  price: string;
+  totalPrice: string;
+}
+
+interface Orders {
+  id: string;
+  stripeCustomerId?: string;
+  paymentId?: string;
+  totalAmount: string;
+  paymentStatus?: string;
+  date: Date;
+  orderItem: OrderItem[];
+}
+
+const Orders: FC = () => {
+  const [pending, setPending] = useState(true);
+  const [orders, setOrders] = useState<Orders[]>();
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const { data } = await client.get("/order");
-        console.log(data);
+        setOrders(data.orders);
       } catch (error) {
         parseError(error);
+      } finally {
+        setPending(false);
       }
     };
     fetchOrders();
   }, []);
 
-  return <div></div>;
+  if (pending) return <Skeletons.Orders />;
+
+  return (
+    <div className="p-5 lg:p-0">
+      <h1 className="text-xl font-semibold mb-6">Đơn hàng của bạn</h1>
+      {orders?.map((order) => {
+        return <div key={order.id}>Đơn hàng</div>;
+      })}
+    </div>
+  );
 };
 
 export default Orders;

@@ -1,4 +1,4 @@
-import { createContext, type FC, type ReactNode, useEffect, useState } from "react";
+import { type FC, type ReactNode, useEffect, useState } from "react";
 import {
   type cartItem,
   type CartItemAPI,
@@ -12,44 +12,22 @@ import useAuth from "../hooks/useAuth";
 import client from "../api/client";
 import toast from "react-hot-toast";
 import { parseError } from "../utils/helper";
+import { CartContext } from "./CartContext";
 
 interface CartApiResponse {
   cart: {
     id: string;
     items: CartItemAPI[];
-  }
+  };
 }
 
 interface Props {
   children: ReactNode;
 }
 
-export interface ICartContext {
-  id?: string;
-  items: cartItem[];
-  pending: boolean;
-  fetching: boolean;
-  totalCount: number;
-  totalPrice: number;
-  subTotal: number;
-  updateCart(item: cartItem): void;
-  clearCart(): void;
-}
-
-export const CartContext = createContext<ICartContext>({
-  items: [],
-  pending: false,
-  fetching: true,
-  totalCount: 0,
-  totalPrice: 0,
-  subTotal: 0,
-  updateCart() {},
-  clearCart() {},
-});
-
 const CART_KEY = "cartItems";
-const updateCartInLS = (cartItems: cartItem[]) => {
-  localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
+const updateCartInLS = (cartItem: cartItem[]) => {
+  localStorage.setItem(CART_KEY, JSON.stringify(cartItem));
 };
 
 let startLSUpdate = false;
@@ -81,9 +59,8 @@ const CartProvider: FC<Props> = ({ children }) => {
     }
   };
 
-
   const updateCart = (item: cartItem) => {
-    startLSUpdate
+    startLSUpdate = true;
     // update the UI
     dispatch(updateCartItems(item));
 
@@ -122,7 +99,7 @@ const CartProvider: FC<Props> = ({ children }) => {
 
         return setFetching(false);
       }
-      
+
       try {
         const { data } = await client.get<CartApiResponse>("/cart");
         dispatch(updateCartState({ id: data.cart.id, items: data.cart.items }));
@@ -135,7 +112,6 @@ const CartProvider: FC<Props> = ({ children }) => {
 
     fetchCartInfo();
   }, [dispatch, profile]);
-
 
   return (
     <CartContext.Provider

@@ -32,7 +32,7 @@ const ReadingPage: FC = () => {
 
   return (
     <div>
-      <EpubReader url={url} />
+      <EpubReader url={"http://192.168.98.2:8989/books/book-test.epub"} />
     </div>
   );
 };

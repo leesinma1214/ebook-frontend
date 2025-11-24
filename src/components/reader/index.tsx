@@ -24,6 +24,15 @@ const getElementSize = (id: string) => {
   return { width, height };
 };
 
+const loadTableOfContent = async (book: Book) => {
+  const [nav, spine] = await Promise.all([
+    book.loaded.navigation,
+    book.loaded.spine,
+  ]);
+  console.log(nav);
+  console.log(spine);
+};
+
 const EpubReader: FC<Props> = ({ url }) => {
   const [loading, setLoading] = useState(true);
   const [rendition, setRendition] = useState<Rendition>();
@@ -39,6 +48,8 @@ const EpubReader: FC<Props> = ({ url }) => {
     });
     rendition.display();
 
+    loadTableOfContent(book);
+    
     rendition.on("rendered", () => {
       setLoading(false);
     });

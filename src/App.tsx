@@ -21,6 +21,7 @@ import Cart from "./views/Cart";
 import PaymentSuccess from "./views/PaymentSuccess";
 import Orders from "./views/Order";
 import ReviewForm from "./views/ReviewForm";
+import AuthorPage from "./views/AuthorPage";
 
 const App: FC = () => {
   return (
@@ -31,6 +32,7 @@ const App: FC = () => {
         <Route path="/verify" element={<Verify />} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/author/:id" element={<AuthorPage />} />
 
         <Route element={<Private />}>
           <Route path="/profile" element={<Profile />} />

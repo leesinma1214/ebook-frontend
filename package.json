@@ -19,6 +19,7 @@
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
     "dateformat": "^5.0.3",
+    "epubjs": "^0.3.93",
     "framer-motion": "^12.23.24",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

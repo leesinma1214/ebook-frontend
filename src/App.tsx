@@ -23,6 +23,7 @@ import Orders from "./views/Order";
 import ReviewForm from "./views/ReviewForm";
 import AuthorPage from "./views/AuthorPage";
 import Library from "./views/Library";
+import ReadingPage from "./views/ReadingPage";
 
 const App: FC = () => {
   return (
@@ -38,6 +39,7 @@ const App: FC = () => {
         <Route element={<Private />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/read/:slug" element={<ReadingPage />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/update-profile" element={<UpdateProfile />} />

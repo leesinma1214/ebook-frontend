@@ -1,5 +1,5 @@
 import { type FC, useEffect, useState } from "react";
-import EpubReader from "../components/EpubReader";
+import EpubReader from "../components/reader";
 import client from "../api/client";
 import { useParams } from "react-router-dom";
 import { parseError } from "../utils/helper";
@@ -21,7 +21,6 @@ const ReadingPage: FC = () => {
     const fetchBookUrl = async () => {
       try {
         const { data } = await client.get<BookAPIRes>(`/book/read/${slug}`);
-
         setUrl(data.url);
       } catch (error) {
         parseError(error);

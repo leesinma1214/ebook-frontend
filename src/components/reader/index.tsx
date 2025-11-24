@@ -38,6 +38,9 @@ const EpubReader: FC<Props> = ({ url }) => {
       rendition.next();
     });
     
+    return () => {
+      if (book) book.destroy();
+    };
   }, [url]);
 
   return (

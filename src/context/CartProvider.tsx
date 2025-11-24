@@ -13,6 +13,7 @@ import client from "../api/client";
 import toast from "react-hot-toast";
 import { parseError } from "../utils/helper";
 import { CartContext } from "./CartContext";
+import { AxiosError } from "axios";
 
 interface CartApiResponse {
   cart: {
@@ -104,7 +105,10 @@ const CartProvider: FC<Props> = ({ children }) => {
         const { data } = await client.get<CartApiResponse>("/cart");
         dispatch(updateCartState({ id: data.cart.id, items: data.cart.items }));
       } catch (error) {
-        parseError(error);
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 404) return;
+          parseError(error);
+        }
       } finally {
         setFetching(false);
       }

@@ -65,7 +65,11 @@ const Library: FC = () => {
               </div>
 
               <div>
-                <Button as={Link} to={`/read/${book.slug}`} radius="sm">
+                <Button
+                  as={Link}
+                  to={`/read/${book.slug}?title=${book.title}`}
+                  radius="sm"
+                >
                   Đọc ngay
                 </Button>
               </div>

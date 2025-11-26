@@ -5,12 +5,14 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { debounce, parseError } from "../utils/helper";
 
 interface BookAPIRes {
-  settings: {
-    highlights: Highlight[];
-    lastLocation: string;
-  };
+ settings: Settings;
   url: string;
 }
+
+type Settings = {
+  highlights: Highlight[];
+  lastLocation: string;
+};
 
 const updateLastLocation = (bookId: string, lastLocation: string) => {
   client.post("/history", {
@@ -24,7 +26,10 @@ const debounceUpdateLastLocation = debounce(updateLastLocation, 500);
 
 const ReadingPage: FC = () => {
   const [url, setUrl] = useState("");
-  const [highlights, setHighlights] = useState<Highlight[]>([]);
+   const [settings, setSettings] = useState<Settings>({
+    highlights: [],
+    lastLocation: "",
+  });
   const { slug } = useParams();
   const [searchParam] = useSearchParams();
   const title = searchParam.get("title");
@@ -32,7 +37,7 @@ const ReadingPage: FC = () => {
 
   const handleOnHighlightSelection = (data: Highlight) => {
     try {
-      setHighlights([...highlights, data]);
+      setSettings({ ...settings, highlights: [...settings.highlights, data] });
       client.post("/history", {
         bookId,
         highlights: [data],
@@ -45,9 +50,11 @@ const ReadingPage: FC = () => {
 
   const handleOnHighlightClear = (cfi: string) => {
     try {
-      const newHighlights = highlights.filter((item) => item.selection !== cfi);
+      const newHighlights = settings.highlights.filter(
+        (item) => item.selection !== cfi
+      );
 
-      setHighlights(newHighlights);
+      setSettings({ ...settings, highlights: newHighlights });
       client.post("/history", {
         bookId,
         highlights: [{ selection: cfi, fill: "" }],
@@ -73,7 +80,7 @@ const ReadingPage: FC = () => {
       try {
         const { data } = await client.get<BookAPIRes>(`/book/read/${slug}`);
         setUrl(data.url);
-        setHighlights(data.settings.highlights);
+        setSettings(data.settings);
       } catch (error) {
         parseError(error);
       }
@@ -87,7 +94,8 @@ const ReadingPage: FC = () => {
       <EpubReader
         url={url}
         title={title || ""}
-        highlights={highlights}
+        highlights={settings.highlights}
+        lastLocation={settings.lastLocation}
         onHighlight={handleOnHighlightSelection}
         onHighlightClear={handleOnHighlightClear}
         onLocationChanged={handleLocationChanged}

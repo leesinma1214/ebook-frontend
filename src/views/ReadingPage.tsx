@@ -5,7 +5,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { debounce, parseError } from "../utils/helper";
 
 interface BookAPIRes {
- settings: Settings;
+  settings: Settings;
   url: string;
 }
 
@@ -26,7 +26,7 @@ const debounceUpdateLastLocation = debounce(updateLastLocation, 500);
 
 const ReadingPage: FC = () => {
   const [url, setUrl] = useState("");
-   const [settings, setSettings] = useState<Settings>({
+  const [settings, setSettings] = useState<Settings>({
     highlights: [],
     lastLocation: "",
   });

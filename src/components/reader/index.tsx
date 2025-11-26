@@ -11,6 +11,7 @@ import { MdOutlineStickyNote2 } from "react-icons/md";
 import { type LocationChangedEvent, type RelocatedEvent } from "./type";
 import HighlightOptions from "./HighlightOptions";
 import { debounce } from "../../utils/helper";
+import NotesModal from "./NotesModal";
 
 interface Props {
   url: string;
@@ -153,6 +154,7 @@ const EpubReader: FC<Props> = ({
   onLocationChanged,
 }) => {
   const [loading, setLoading] = useState(true);
+  const [showNotes, setShowNotes] = useState(false);
   const [showHighlightOption, setShowHighlightOptions] = useState(false);
   const [selectedCfi, setSelectedCfi] = useState("");
   const [showToc, setShowToc] = useState(false);
@@ -265,7 +267,7 @@ const EpubReader: FC<Props> = ({
       setSelectedCfi(cfi);
       debounceSetShowHighlightOption(false);
     });
-    
+
     // Let's listen to the highlight click
     rendition.on("markClicked", (cfi: string) => {
       setShowHighlightOptions(true);
@@ -313,7 +315,11 @@ const EpubReader: FC<Props> = ({
               onFontIncrease={() => handleFontSizeUpdate("increase")}
             />
             {/* Display Notes */}
-            <Button variant="light" isIconOnly>
+            <Button
+              onPress={() => setShowNotes(true)}
+              variant="light"
+              isIconOnly
+            >
               <MdOutlineStickyNote2 size={30} />
             </Button>
 
@@ -357,6 +363,13 @@ const EpubReader: FC<Props> = ({
         onClear={handleOnHighlightClear}
       />
 
+      <NotesModal
+        book={rendition?.book}
+        notes={highlights.map(({ selection }) => selection)}
+        isOpen={showNotes}
+        onClose={() => setShowNotes(false)}
+      />
+      
       <div className="h-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
         <div className="flex-1 text-center">
           <p>Trang {`${page.start} - ${page.total}`}</p>

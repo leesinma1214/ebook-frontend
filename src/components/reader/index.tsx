@@ -267,6 +267,12 @@ const EpubReader: FC<Props> = ({
       setShowHighlightOptions,
       3000
     );
+    const debounceUpdateLoading = debounce(setLoading, 500);
+
+    // Let's listen if resized is finished
+    rendition.on("resized", () => {
+      debounceUpdateLoading(false);
+    });
 
     // Let's fire the on click if we click inside the book
     rendition.on("click", () => {
@@ -308,6 +314,24 @@ const EpubReader: FC<Props> = ({
     };
   }, [url, lastLocation]);
 
+  // to handle window resize or resize the book container
+  useEffect(() => {
+    if (!rendition) return;
+
+    const handleResize = () => {
+      setLoading(true);
+
+      const { height, width } = getElementSize(wrapper);
+      rendition.resize(width, height);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [rendition]);
+  
   return (
     <div className="h-screen flex flex-col group dark:bg-book-dark dark:text-book-dark">
       <LoadingIndicator visible={loading} />

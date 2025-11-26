@@ -2,7 +2,7 @@ import { type FC, useEffect, useState } from "react";
 import EpubReader, { type Highlight } from "../components/reader";
 import client from "../api/client";
 import { useParams, useSearchParams } from "react-router-dom";
-import { parseError } from "../utils/helper";
+import { debounce, parseError } from "../utils/helper";
 
 interface BookAPIRes {
   settings: {
@@ -11,6 +11,16 @@ interface BookAPIRes {
   };
   url: string;
 }
+
+const updateLastLocation = (bookId: string, lastLocation: string) => {
+  client.post("/history", {
+    bookId,
+    lastLocation,
+    remove: false,
+  });
+};
+
+const debounceUpdateLastLocation = debounce(updateLastLocation, 500);
 
 const ReadingPage: FC = () => {
   const [url, setUrl] = useState("");
@@ -50,11 +60,7 @@ const ReadingPage: FC = () => {
 
   const handleLocationChanged = (location: string) => {
     try {
-      client.post("/history", {
-        bookId,
-        lastLocation: location,
-        remove: true,
-      });
+      if (bookId) debounceUpdateLastLocation(bookId, location);
     } catch (error) {
       parseError(error);
     }

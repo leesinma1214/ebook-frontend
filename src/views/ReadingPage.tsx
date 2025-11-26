@@ -4,8 +4,6 @@ import client from "../api/client";
 import { useParams, useSearchParams } from "react-router-dom";
 import { parseError } from "../utils/helper";
 
-interface Props {}
-
 interface BookAPIRes {
   settings: {
     highlights: string[];
@@ -14,7 +12,7 @@ interface BookAPIRes {
   url: string;
 }
 
-const ReadingPage: FC<Props> = () => {
+const ReadingPage: FC = () => {
   const [url, setUrl] = useState("");
   const [highlights, setHighlights] = useState<Highlight[]>([
     { fill: "red", selection: "epubcfi(/6/6!/4/26,/1:250,/1:439)" },

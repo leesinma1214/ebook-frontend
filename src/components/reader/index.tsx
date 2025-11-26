@@ -125,6 +125,7 @@ const applyHighlights = async (
   rendition: Rendition,
   highlights: Highlight[]
 ) => {
+  console.log("applying highlight");
   highlights.forEach(({ selection, fill }) => {
     rendition.annotations.highlight(
       selection,
@@ -318,8 +319,9 @@ const EpubReader: FC<Props> = ({ url, title, highlights, onHighlight }) => {
 
       <HighlightOptions
         visible={showHighlightOption}
-        onSelect={handleHighlightSelection}
-      />
+        onSelect={handleHighlightSelection} onClear={function (): void {
+          throw new Error("Function not implemented.");
+        } }      />
 
       <div className="h-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
         <div className="flex-1 text-center">

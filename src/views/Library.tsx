@@ -67,7 +67,7 @@ const Library: FC = () => {
               <div>
                 <Button
                   as={Link}
-                  to={`/read/${book.slug}?title=${book.title}`}
+                  to={`/read/${book.slug}?title=${book.title}&id=${book.id}`}
                   radius="sm"
                 >
                   Đọc ngay

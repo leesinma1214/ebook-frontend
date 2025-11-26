@@ -6,7 +6,7 @@ import { parseError } from "../utils/helper";
 
 interface BookAPIRes {
   settings: {
-    highlights: string[];
+    highlights: Highlight[];
     lastLocation: string;
   };
   url: string;
@@ -14,16 +14,23 @@ interface BookAPIRes {
 
 const ReadingPage: FC = () => {
   const [url, setUrl] = useState("");
-  const [highlights, setHighlights] = useState<Highlight[]>([
-    { fill: "red", selection: "epubcfi(/6/6!/4/26,/1:250,/1:439)" },
-    { fill: "blue", selection: "epubcfi(/6/6!/4/18,/1:1,/1:193)" },
-  ]);
+  const [highlights, setHighlights] = useState<Highlight[]>([]);
   const { slug } = useParams();
   const [searchParam] = useSearchParams();
   const title = searchParam.get("title");
+  const bookId = searchParam.get("id");
 
   const handleOnHighlightSelection = (data: Highlight) => {
-    setHighlights([...highlights, data]);
+    try {
+      setHighlights([...highlights, data]);
+      client.post("/history", {
+        bookId,
+        highlights: [data],
+        remove: false,
+      });
+    } catch (error) {
+      parseError(error);
+    }
   };
 
   useEffect(() => {
@@ -33,6 +40,7 @@ const ReadingPage: FC = () => {
       try {
         const { data } = await client.get<BookAPIRes>(`/book/read/${slug}`);
         setUrl(data.url);
+        setHighlights(data.settings.highlights);
       } catch (error) {
         parseError(error);
       }

@@ -9,6 +9,7 @@ import ThemeOptions, { type ThemeModes } from "./ThemeOption";
 import FontOptions from "./FontOptions";
 import { MdOutlineStickyNote2 } from "react-icons/md";
 import { type RelocatedEvent } from "./type";
+import HighlightOptions from "./HighlightOptions";
 
 interface Props {
   url: string;
@@ -265,6 +266,8 @@ const EpubReader: FC<Props> = ({ url, title }) => {
         data={tableOfContent}
         onClick={handleNavigation}
       />
+
+      <HighlightOptions visible onClear={() => {}} onSelect={() => {}} />
 
       <div className="h-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
         <div className="flex-1 text-center">

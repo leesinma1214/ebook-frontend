@@ -34,7 +34,7 @@ const AuthorPage: FC = () => {
     };
 
     fetchAuthorInfo();
-  }, []);
+  }, [id]);
 
   if (fetching)
     return (

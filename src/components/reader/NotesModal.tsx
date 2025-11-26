@@ -52,8 +52,8 @@ const NotesModal: FC<Props> = ({
                 <CardBody
                   className="cursor-pointer"
                   onClick={() => {
-                    onNoteClick && onNoteClick(item.cfi);
-                    onClose && onClose();
+                    if (onNoteClick) onNoteClick(item.cfi);
+                    if (onClose) onClose();
                   }}
                 >
                   <p className="line-clamp-3">{item.note}</p>

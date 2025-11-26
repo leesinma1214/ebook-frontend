@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useCallback, useEffect, useState } from "react";
 import EpubReader, { type Highlight } from "../components/reader";
 import client from "../api/client";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -65,13 +65,16 @@ const ReadingPage: FC = () => {
     }
   };
 
-  const handleLocationChanged = (location: string) => {
-    try {
-      if (bookId) debounceUpdateLastLocation(bookId, location);
-    } catch (error) {
-      parseError(error);
-    }
-  };
+  const handleLocationChanged = useCallback(
+    (location: string) => {
+      try {
+        if (bookId) debounceUpdateLastLocation(bookId, location);
+      } catch (error) {
+        parseError(error);
+      }
+    },
+    [bookId]
+  );
 
   useEffect(() => {
     if (!slug) return;
@@ -87,7 +90,7 @@ const ReadingPage: FC = () => {
     };
 
     fetchBookUrl();
-  }, []);
+  }, [slug]);
 
   return (
     <div>

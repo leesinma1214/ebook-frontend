@@ -8,7 +8,7 @@ import { IoMenu } from "react-icons/io5";
 import ThemeOptions, { type ThemeModes } from "./ThemeOption";
 import FontOptions from "./FontOptions";
 import { MdOutlineStickyNote2 } from "react-icons/md";
-import { type RelocatedEvent } from "./type";
+import { type LocationChangedEvent, type RelocatedEvent } from "./type";
 import HighlightOptions from "./HighlightOptions";
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
   title?: string;
   highlights: Highlight[];
   onHighlight(data: Highlight): void;
+  onLocationChanged(location: string): void;
   onHighlightClear(selection: string): void;
 }
 
@@ -146,6 +147,7 @@ const EpubReader: FC<Props> = ({
   highlights,
   onHighlight,
   onHighlightClear,
+  onLocationChanged,
 }) => {
   const [loading, setLoading] = useState(true);
   const [showHighlightOption, setShowHighlightOptions] = useState(false);
@@ -265,7 +267,10 @@ const EpubReader: FC<Props> = ({
     rendition.on("displayed", () => {
       updatePageCounts(rendition);
     });
-    rendition.on("locationChanged", () => updatePageCounts(rendition));
+    rendition.on("locationChanged", (evt: LocationChangedEvent) => {
+      onLocationChanged(evt.start);
+      updatePageCounts(rendition);
+    });
 
     loadTableOfContent(book)
       .then(setTableOfContent)

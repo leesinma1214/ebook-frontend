@@ -48,6 +48,18 @@ const ReadingPage: FC = () => {
     }
   };
 
+  const handleLocationChanged = (location: string) => {
+    try {
+      client.post("/history", {
+        bookId,
+        lastLocation: location,
+        remove: true,
+      });
+    } catch (error) {
+      parseError(error);
+    }
+  };
+
   useEffect(() => {
     if (!slug) return;
 
@@ -72,6 +84,7 @@ const ReadingPage: FC = () => {
         highlights={highlights}
         onHighlight={handleOnHighlightSelection}
         onHighlightClear={handleOnHighlightClear}
+        onLocationChanged={handleLocationChanged}
       />
     </div>
   );

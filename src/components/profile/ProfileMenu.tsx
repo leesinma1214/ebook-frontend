@@ -73,7 +73,7 @@ const ProfileMenu: FC<Props> = ({ profile, signOut }) => {
                 key="create_new_book"
                 className="p-0"
               >
-                <DropdownLink title="Create New Book" to="/create-new-book" />
+                <DropdownLink title="Tạo sách mới" to="/create-new-book" />
               </DropdownItem>
             </DropdownSection>
           ) : (

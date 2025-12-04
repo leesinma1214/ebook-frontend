@@ -52,6 +52,16 @@ const Orders: FC = () => {
 
   if (pending) return <Skeletons.Orders />;
 
+  if (!orders?.length)
+    return (
+      <div className="p-5 lg:p-0">
+        <h1 className="text-xl font-semibold mb-6">Your Orders</h1>
+        <div className="text-center pt-10 font-bold text-3xl opacity-60">
+          <p>{"Bạn không có đơn hàng nào."}</p>
+        </div>
+      </div>
+    );
+
   return (
     <div className="p-5 lg:p-0">
       <h1 className="text-xl font-semibold mb-6">Đơn hàng của bạn</h1>

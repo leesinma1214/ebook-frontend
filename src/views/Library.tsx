@@ -37,8 +37,15 @@ const Library: FC = () => {
 
   if (fetching)
     return (
-      <div className="text-center pt-10, animate-pulse">
+      <div className="text-center pt-10 animate-pulse">
         <p>Đang tải...</p>
+      </div>
+    );
+  
+  if (!books.length)
+    return (
+      <div className="text-center pt-10 font-bold text-3xl opacity-60">
+        <p>Thư viện của bạn trống</p>
       </div>
     );
 

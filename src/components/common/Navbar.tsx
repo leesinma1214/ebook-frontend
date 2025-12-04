@@ -79,13 +79,15 @@ const Navbar: FC = () => {
         </NavbarContent>
       </HeroUINav>
 
-      <MobileNav
-        isAuthor={isAuthor}
-        visible={showNav}
-        onClose={closeNav}
-        cartTotal={totalCount}
-        onLogout={signOut}
-      />
+      <div className="block md:hidden">
+        <MobileNav
+          isAuthor={isAuthor}
+          visible={showNav}
+          onClose={closeNav}
+          cartTotal={totalCount}
+          onLogout={signOut}
+        />
+      </div>
     </>
   );
 };

@@ -5,7 +5,6 @@ import {
   NavbarContent,
   NavbarItem,
   Badge,
-  Input,
 } from "@heroui/react";
 import { FaBookReader } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
@@ -13,10 +12,10 @@ import { Link } from "react-router-dom";
 import ProfileOptions from "../profile/ProfileOptions";
 import DarkModeSwitch from "./DarkModeSwitch";
 import useCart from "../../hooks/useCart";
-import { IoMdSearch } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
 import MobileNav from "../MobileNav";
 import useAuth from "../../hooks/useAuth";
+import SearchForm from "../SearchForm";
 
 const Navbar: FC = () => {
   const [showNav, setShowNav] = useState(false);
@@ -43,16 +42,7 @@ const Navbar: FC = () => {
         </NavbarBrand>
 
         <NavbarContent className="w-full" justify="center">
-          <Input
-            variant="bordered"
-            placeholder="Tìm kiếm sách..."
-            endContent={
-              <button className="focus:outline-none" type="button">
-                <IoMdSearch size={24} />
-              </button>
-            }
-            className="w-full"
-          />
+          <SearchForm />
         </NavbarContent>
 
         <NavbarContent justify="end">

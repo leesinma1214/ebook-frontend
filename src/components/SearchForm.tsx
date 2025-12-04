@@ -15,7 +15,7 @@ const SearchForm: FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="w-full" onSubmit={handleSubmit}>
       <Input
         variant="bordered"
         placeholder="Tìm kiếm sách..."

@@ -11,6 +11,7 @@ import CartProvider from "./context/CartProvider.tsx";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
             <HeroUIProvider>
               <App />
               <Analytics />
+              <SpeedInsights />
             </HeroUIProvider>
           </CartProvider>
         </AuthProvider>

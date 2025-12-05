@@ -26,7 +26,7 @@ const Profile: FC = () => {
             name={profile?.name}
           />
 
-          <div className="flex-1 pl-4">
+          <div className="flex-1 px-4">
             <p className="md:text-xl text-base font-semibold">{profile.name}</p>
             <p className="md:text-base text-sm truncate">{profile.email}</p>
 

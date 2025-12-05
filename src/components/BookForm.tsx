@@ -27,6 +27,7 @@ export interface InitialBookToUpdate {
   id: string;
   slug: string;
   title: string;
+  status: string;
   description: string;
   genre: string;
   language: string;
@@ -34,7 +35,6 @@ export interface InitialBookToUpdate {
   price: { mrp: string; sale: string };
   publicationName: string;
   publishedAt: string;
-  status: string;
 }
 
 interface Props {
@@ -66,15 +66,15 @@ const defaultBookInfo = {
   mrp: "",
   publicationName: "",
   sale: "",
-  status: "published"
+  status: "published",
 };
 
 interface BookToSubmit {
   title: string;
+  status: string;
   description: string;
   uploadMethod: "aws" | "local";
   language: string;
-  status: string;
   publishedAt?: string;
   slug?: string;
   publicationName: string;
@@ -106,9 +106,6 @@ const commonBookSchema = {
     .min(3, "Tên nhà xuất bản quá ngắn!"),
   uploadMethod: z.enum(["aws", "local"], {
     message: "Phương thức tải lên bị thiếu!",
-  }),
-  status: z.enum(["published", "unpublished"], {
-    message: "Trạng thái xuất bản bị thiếu!",
   }),
   publishedAt: z
     .string({
@@ -255,12 +252,12 @@ const BookForm: FC<Props> = ({
       const bookToSend: BookToSubmit = {
         title: bookInfo.title,
         description: bookInfo.description,
-        status: bookInfo.status || "published",
         genre: bookInfo.genre,
         language: bookInfo.language,
         publicationName: bookInfo.publicationName,
         uploadMethod: "aws",
         publishedAt: bookInfo.publishedAt,
+        status: bookInfo.status || "published",
         price: {
           mrp: Number(bookInfo.mrp),
           sale: Number(bookInfo.sale),
@@ -354,10 +351,10 @@ const BookForm: FC<Props> = ({
       const bookToSend: BookToSubmit = {
         title: bookInfo.title,
         description: bookInfo.description,
-        status: bookInfo.status || "published",
         genre: bookInfo.genre,
         language: bookInfo.language,
         publicationName: bookInfo.publicationName,
+        status: bookInfo.status || "published",
         uploadMethod: "aws",
         publishedAt: bookInfo.publishedAt,
         slug: initialState?.slug,
@@ -608,18 +605,16 @@ const BookForm: FC<Props> = ({
           <ErrorList errors={errors?.price} />
         </div>
       </div>
-      
-      <div>
-        <RadioGroup
-          label="Chọn trạng thái xuất bản"
-          value={bookInfo.status}
-          onValueChange={(status) => setBookInfo({ ...bookInfo, status })}
-          orientation="horizontal"
-        >
-          <Radio value="published">Đã xuất bản</Radio>
-          <Radio value="unpublished">Chưa xuất bản</Radio>
-        </RadioGroup>
-      </div>
+
+      <RadioGroup
+        label="Chọn trạng thái xuất bản"
+        value={bookInfo.status}
+        onValueChange={(status) => setBookInfo({ ...bookInfo, status })}
+        orientation="horizontal"
+      >
+        <Radio value="published">Đã xuất bản</Radio>
+        <Radio value="unpublished">Chưa xuất bản</Radio>
+      </RadioGroup>
 
       <Button isLoading={busy} type="submit" className="w-full">
         {submitBtnTitle}

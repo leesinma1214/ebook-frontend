@@ -14,6 +14,7 @@ import client from "../api/client";
 import { Link } from "react-router-dom";
 import { parseError } from "../utils/helper";
 import toast from "react-hot-toast";
+import { IoEyeOutline } from "react-icons/io5";
 
 interface Props {
   visible?: boolean;
@@ -78,9 +79,9 @@ const AuthorPublicationTable: FC<Props> = ({ authorId, visible }) => {
   return (
     <Table aria-label="Bảng sách của tác giả" shadow="none">
       <TableHeader>
-        <TableColumn>Tiêu đề</TableColumn>
-        <TableColumn>Trạng thái</TableColumn>
-        <TableColumn>Hành động</TableColumn>
+        <TableColumn className="w-3/5">Tiêu đề</TableColumn>
+        <TableColumn className="w-2/12">Trạng thái</TableColumn>
+        <TableColumn className="w-2/12">Hành động</TableColumn>
       </TableHeader>
       <TableBody>
         {books.map((book) => {
@@ -117,6 +118,14 @@ const AuthorPublicationTable: FC<Props> = ({ authorId, visible }) => {
                     isLoading={removingBookId === book.id}
                   >
                     <FaEdit />
+                  </Button>
+                  <Button
+                    as={Link}
+                    to={`/read/${book.slug}?title=${book.title}&id=${book.id}`}
+                    isIconOnly
+                    size="sm"
+                  >
+                    <IoEyeOutline />
                   </Button>
                 </div>
               </TableCell>

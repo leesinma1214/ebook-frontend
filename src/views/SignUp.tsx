@@ -39,8 +39,12 @@ const SignUp: FC = () => {
     return (
       <div className="flex-1 flex flex-col items-center justify-center md:p-0 p-4">
         <RiMailCheckLine size={80} className="animate-bounce" />
-        <p className="text-lg font-semibold text-center">
+        <p className="text-lg text-center">
           Email xác nhận đã được gửi! Vui lòng kiểm tra hộp thư đến của bạn.
+        </p>
+        <p className="font-semibold">
+          Nếu bạn là người dùng mới, có thể mất một thời gian để email xuất hiện
+          trong hộp thư đến của bạn. Vì vậy, hãy kiên nhẫn.
         </p>
       </div>
     );

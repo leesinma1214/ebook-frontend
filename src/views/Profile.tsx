@@ -35,15 +35,17 @@ const Profile: FC = () => {
               </span>
             </p>
 
-            {!isAuthor ? (
-              <Link className="text-xs underline" to="/author-registration">
-                Trở thành tác giả
-              </Link>
-            ) : (
-              <Link className="text-xs underline" to="/update-author">
-                Cập Nhật Thông Tin Tác Giả
-              </Link>
-            )}
+            <div className="pl-3">
+              {!isAuthor ? (
+                <Link className="text-xs underline" to="/author-registration">
+                  Trở thành tác giả
+                </Link>
+              ) : (
+                <Link className="text-xs underline" to="/update-author">
+                  Cập Nhật Thông Tin Tác Giả
+                </Link>
+              )}
+            </div>
           </div>
         </div>
 

@@ -37,9 +37,9 @@ const SignUp: FC = () => {
 
   if (showSuccessResponse)
     return (
-      <div className="flex-1 flex flex-col items-center justify-center">
+      <div className="flex-1 flex flex-col items-center justify-center md:p-0 p-4">
         <RiMailCheckLine size={80} className="animate-bounce" />
-        <p className="text-lg font-semibold">
+        <p className="text-lg font-semibold text-center">
           Email xác nhận đã được gửi! Vui lòng kiểm tra hộp thư đến của bạn.
         </p>
       </div>

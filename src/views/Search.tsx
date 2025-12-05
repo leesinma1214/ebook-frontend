@@ -3,25 +3,31 @@ import { useSearchParams } from "react-router-dom";
 import client from "../api/client";
 import BookList, { type Book } from "../components/BookList";
 import DividerWithTitle from "../components/common/DividerWithTitle";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const Search: FC = () => {
   const [result, setResult] = useState<Book[]>([]);
   const [notFound, setNotFound] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [searchParam] = useSearchParams();
 
   const title = searchParam.get("title");
 
   useEffect(() => {
+    setBusy(true);
     client
       .get<{ results: Book[] }>("/search/books?title=" + title)
       .then(({ data }) => {
         if (!data.results.length) setNotFound(true);
         else setNotFound(false);
         setResult(data.results);
-      });
+      })
+      .finally(() => setBusy(false));
   }, [title]);
 
   const heading = `Kết quả tìm kiếm: ${title}`;
+
+  if (busy) return <LoadingSpinner label="Đang tìm kiếm..." />;
 
   if (notFound)
     return (

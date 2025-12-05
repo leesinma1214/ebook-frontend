@@ -1,10 +1,14 @@
 import { Spinner } from "@heroui/react";
 import { type FC } from "react";
 
-const LoadingSpinner: FC = () => {
+interface Props {
+  label?: string;
+}
+
+const LoadingSpinner: FC<Props> = ({ label }) => {
   return (
     <div className="flex items-center justify-center p-10">
-      <Spinner label="Đang xác nhận..." color="warning" />
+      <Spinner label={label} color="warning" />
     </div>
   );
 };

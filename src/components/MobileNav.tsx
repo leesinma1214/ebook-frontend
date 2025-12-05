@@ -12,12 +12,14 @@ interface Props {
   onLogout(): void;
   cartTotal?: number | string;
   isAuthor?: boolean;
+  isLoggedIn: boolean;
 }
 
 const MobileNav: FC<Props> = ({
   isAuthor = false,
   cartTotal,
   visible,
+  isLoggedIn,
   onClose,
   onLogout,
 }) => {
@@ -56,36 +58,54 @@ const MobileNav: FC<Props> = ({
 
           <hr />
 
-          <ul className="p-4 space-y-4">
-            <li>
-              <Link onClick={onClose} to="/profile">
-                Hồ sơ
-              </Link>
-            </li>
-            <li>
-              <Link onClick={onClose} to="/orders">
-                Đơn hàng
-              </Link>
-            </li>
-            <li>
-              <Link onClick={onClose} to="/library">
-                Thư viện
-              </Link>
-            </li>
-            {isAuthor && (
+          {isLoggedIn && (
+            <ul className="p-4 space-y-4">
               <li>
-                <Link onClick={onClose} to="/create-new-book">
-                  Tạo sách mới
+                <Link onClick={onClose} to="/profile">
+                  Trang cá nhân
                 </Link>
               </li>
-            )}
-          </ul>
+            <li>
+                <Link onClick={onClose} to="/orders">
+                  Đơn hàng
+                </Link>
+              </li>
+              <li>
+                <Link onClick={onClose} to="/library">
+                  Thư viện
+                </Link>
+              </li>
+              {isAuthor && (
+                <li>
+                  <Link onClick={onClose} to="/create-new-book">
+                    Tạo sách mới
+                  </Link>
+                </li>
+              )}
+            </ul>
+          )}
 
-          <div>
-            <Button onPress={onLogout} radius="sm" className="w-full">
-              Đăng xuất
-            </Button>
-          </div>
+          {isLoggedIn && (
+            <div>
+              <Button onPress={onLogout} radius="sm" className="w-full">
+                Đăng xuất
+              </Button>
+            </div>
+          )}
+
+          {!isLoggedIn && (
+            <div>
+              <Button
+                onPress={onClose}
+                className="w-full"
+                as={Link}
+                to="sign-up"
+                variant="bordered"
+              >
+                Đăng ký / Đăng nhập
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 

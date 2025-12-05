@@ -23,7 +23,7 @@ const NewAuthorRegistration: FC = () => {
 
   if (isAuthor) return <Navigate to="/profile" />;
 
-  return <AuthorForm onSubmit={handleSubmit} btnTitle="Became an Author" />;
+  return <AuthorForm onSubmit={handleSubmit} btnTitle="Trở thành tác giả" />;
 };
 
 export default NewAuthorRegistration;

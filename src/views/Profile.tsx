@@ -32,12 +32,12 @@ const Profile: FC = () => {
 
             <div className="flex justify-between items-center">
               <p>
-                Role:{" "}
+                Vai trò:{" "}
                 <span className="italic text-sm">
                   {profile.role.toUpperCase()}
                 </span>
               </p>
-    
+
               <div className="pl-3">
                 {!isAuthor ? (
                   <Link className="text-xs underline" to="/author-registration">

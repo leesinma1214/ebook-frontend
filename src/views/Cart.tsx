@@ -6,8 +6,12 @@ import { calculateDiscount, formatPrice, parseError } from "../utils/helper";
 import { FaMinus, FaPlus, FaRegTrashCan } from "react-icons/fa6";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import client from "../api/client";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Cart: FC = () => {
+  const { profile } = useAuth();
+  const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const {
     id,
@@ -23,6 +27,7 @@ const Cart: FC = () => {
 
   const handleCheckout = async () => {
     try {
+      if (!profile) return navigate("/sign-up");
       setBusy(true);
       const { data } = await client.post("/checkout", { cartId: id });
       if (data.checkoutUrl) {

@@ -10,6 +10,8 @@ interface ApiError {
 export const parseError = (error: unknown) => {
   if (error instanceof AxiosError) {
     const data = error.response?.data as ApiError;
+
+    console.log(error);
     if (data.errors) {
       // it means this is an array of objects with error
       const messages = Object.values(data.errors).flat();

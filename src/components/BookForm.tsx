@@ -4,6 +4,8 @@ import {
   Button,
   DatePicker,
   Input,
+  Radio,
+  RadioGroup,
 } from "@heroui/react";
 import {
   type ChangeEventHandler,
@@ -32,6 +34,7 @@ export interface InitialBookToUpdate {
   price: { mrp: string; sale: string };
   publicationName: string;
   publishedAt: string;
+  status: string;
 }
 
 interface Props {
@@ -52,6 +55,7 @@ interface DefaultForm {
   language: string;
   mrp: string;
   sale: string;
+  status?: string;
 }
 
 const defaultBookInfo = {
@@ -62,6 +66,7 @@ const defaultBookInfo = {
   mrp: "",
   publicationName: "",
   sale: "",
+  status: "published"
 };
 
 interface BookToSubmit {
@@ -69,6 +74,7 @@ interface BookToSubmit {
   description: string;
   uploadMethod: "aws" | "local";
   language: string;
+  status: string;
   publishedAt?: string;
   slug?: string;
   publicationName: string;
@@ -100,6 +106,9 @@ const commonBookSchema = {
     .min(3, "Tên nhà xuất bản quá ngắn!"),
   uploadMethod: z.enum(["aws", "local"], {
     message: "Phương thức tải lên bị thiếu!",
+  }),
+  status: z.enum(["published", "unpublished"], {
+    message: "Trạng thái xuất bản bị thiếu!",
   }),
   publishedAt: z
     .string({
@@ -246,6 +255,7 @@ const BookForm: FC<Props> = ({
       const bookToSend: BookToSubmit = {
         title: bookInfo.title,
         description: bookInfo.description,
+        status: bookInfo.status || "published",
         genre: bookInfo.genre,
         language: bookInfo.language,
         publicationName: bookInfo.publicationName,
@@ -344,6 +354,7 @@ const BookForm: FC<Props> = ({
       const bookToSend: BookToSubmit = {
         title: bookInfo.title,
         description: bookInfo.description,
+        status: bookInfo.status || "published",
         genre: bookInfo.genre,
         language: bookInfo.language,
         publicationName: bookInfo.publicationName,
@@ -420,6 +431,7 @@ const BookForm: FC<Props> = ({
         publishedAt,
         price,
         cover,
+        status,
       } = initialState;
 
       if (cover) setCover(cover);
@@ -433,6 +445,7 @@ const BookForm: FC<Props> = ({
         publishedAt,
         mrp: price.mrp,
         sale: price.sale,
+        status,
       });
 
       setIsForUpdate(true);
@@ -594,6 +607,18 @@ const BookForm: FC<Props> = ({
         <div className="p-2">
           <ErrorList errors={errors?.price} />
         </div>
+      </div>
+      
+      <div>
+        <RadioGroup
+          label="Chọn trạng thái xuất bản"
+          value={bookInfo.status}
+          onValueChange={(status) => setBookInfo({ ...bookInfo, status })}
+          orientation="horizontal"
+        >
+          <Radio value="published">Đã xuất bản</Radio>
+          <Radio value="unpublished">Chưa xuất bản</Radio>
+        </RadioGroup>
       </div>
 
       <Button isLoading={busy} type="submit" className="w-full">

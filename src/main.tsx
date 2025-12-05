@@ -10,6 +10,7 @@ import AuthProvider from "./context/AuthProvider.tsx";
 import CartProvider from "./context/CartProvider.tsx";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Analytics } from "@vercel/analytics/react";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -19,8 +20,9 @@ createRoot(document.getElementById("root")!).render(
           <CartProvider>
             <HeroUIProvider>
               <App />
+              <Analytics />
             </HeroUIProvider>
-          </CartProvider>  
+          </CartProvider>
         </AuthProvider>
       </Provider>
     </BrowserRouter>

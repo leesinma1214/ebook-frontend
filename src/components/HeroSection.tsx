@@ -26,13 +26,34 @@ const settings = {
 
 const HeroSection: FC = () => {
   const [books, setBooks] = useState<FeaturedBook[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    client<{ featuredBooks: FeaturedBook[] }>("/book/featured").then(
-      ({ data }) => {
-        setBooks(data.featuredBooks);
-      }
-    );
+    client<{ featuredBooks: FeaturedBook[] }>("/book/featured")
+      .then(({ data }) => {
+        if (data?.featuredBooks) {
+          setBooks(data.featuredBooks);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch featured books:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return (
+      <div className="md:h-96 rounded-medium p-5 bg-[#faf7f2] dark:bg-[#231e1a] flex items-center justify-center">
+        <p>Đang tải...</p>
+      </div>
+    );
+  }
+
+  if (books.length === 0) {
+    return null;
+  }
 
   return (
     <div className="md:h-96 rounded-medium p-5 bg-[#faf7f2] dark:bg-[#231e1a]">

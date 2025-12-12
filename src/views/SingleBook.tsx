@@ -43,17 +43,13 @@ const SingleBook: FC = () => {
     );
 
   return (
-    <div className="p-5 lg:p-0" space-y-20>
+    <div className="p-5 lg:p-0 space-y-20">
       <BookDetail book={bookDetails} />
 
       <RecommendedSection id={bookDetails?.id} />
 
       {/* Review Section */}
-      <ReviewSection
-        id={bookDetails?.id}
-        reviews={reviews}
-        title={`${bookDetails?.title} Đánh giá`}
-      />
+      <ReviewSection id={bookDetails?.id} reviews={reviews} title="Đánh giá" />
     </div>
   );
 };

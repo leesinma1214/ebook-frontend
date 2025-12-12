@@ -1,4 +1,4 @@
-import { type FC, useEffect ,useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import RichEditor from "../rich-editor";
 import { Button, Input } from "@heroui/react";
@@ -6,6 +6,7 @@ import { MdClose, MdOutlineAdd } from "react-icons/md";
 import { z } from "zod";
 import ErrorList from "./ErrorList";
 import { parseError } from "../../utils/helper";
+import toast from "react-hot-toast";
 
 export interface AuthorInfo {
   name: string;
@@ -107,6 +108,7 @@ const AuthorForm: FC<Props> = ({ initialState, btnTitle, onSubmit }) => {
       // Clear errors and submit the data
       setErrors({});
       await onSubmit(result.data);
+      toast.success("Cập nhật thông tin tác giả thành công!");
     } catch (error) {
       parseError(error);
     } finally {
@@ -130,7 +132,7 @@ const AuthorForm: FC<Props> = ({ initialState, btnTitle, onSubmit }) => {
   return (
     <div className="p-4 space-y-6">
       <p>
-        Name: <span className="font-semibold text-lg">{profile?.name}</span>
+        Tên: <span className="font-semibold text-lg">{profile?.name}</span>
       </p>
 
       <RichEditor

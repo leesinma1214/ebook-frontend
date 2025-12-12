@@ -16,9 +16,12 @@ const BookByGenre: FC<Props> = ({ genre }) => {
     const fetchBooks = async (genre: string) => {
       try {
         const { data } = await client.get("/book/by-genre/" + genre);
-        setBooks(data.books);
+        // Handle both data.books and data.results
+        const booksList = data.books || data.results || [];
+        setBooks(booksList);
       } catch (error) {
         parseError(error);
+        setBooks([]);
       } finally {
         setBusy(false);
       }
@@ -27,9 +30,10 @@ const BookByGenre: FC<Props> = ({ genre }) => {
     fetchBooks(genre);
   }, [genre]);
 
-  console.log(books);
-
   if (busy) return <Skeletons.BookList />;
+
+  // Don't render if no books
+  if (books.length === 0) return null;
 
   return <BookList title={genre} data={books} />;
 };

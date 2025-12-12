@@ -3,6 +3,7 @@ import {
   type ChangeEventHandler,
   type FC,
   type FormEventHandler,
+  useEffect,
   useState,
 } from "react";
 import { parseError } from "../../utils/helper";
@@ -24,9 +25,16 @@ const NewUserForm: FC<Props> = ({
   avatar,
   onSubmit,
 }) => {
-  const [userInfo, setUserInfo] = useState<NewUserInfo>({ name: "" });
+  const [userInfo, setUserInfo] = useState<NewUserInfo>({ name: name || "" });
   const [localAvatar, setLocalAvatar] = useState("");
   const [busy, setBusy] = useState(false);
+
+  // Update userInfo when name prop changes
+  useEffect(() => {
+    if (name) {
+      setUserInfo((prev) => ({ ...prev, name }));
+    }
+  }, [name]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value, files } = target;
@@ -93,7 +101,7 @@ const NewUserForm: FC<Props> = ({
             label="Full Name"
             placeholder="John Doe"
             variant="bordered"
-            value={userInfo.name || name}
+            value={userInfo.name}
             onChange={handleChange}
           />
 

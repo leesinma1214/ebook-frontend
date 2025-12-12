@@ -66,7 +66,15 @@ const HeroSection: FC = () => {
           return (
             <div key={item.slug}>
               <div className="md:flex justify-between">
-                <div className="flex-1 flex flex-col justify-center p-5">
+                <div className="p-5 flex-1 flex items-center justify-center md:order-2">
+                  <img
+                    src={item.cover}
+                    alt={item.title}
+                    className="md:w-48 md:h-80 w-32 rounded-md object-cover shadow-lg rotate-12"
+                  />
+                </div>
+
+                <div className="flex-1 flex flex-col justify-center p-5 md:order-1">
                   <h1 className="lg:text-6xl text-3xl">{item.slogan}</h1>
                   <p className="md:text-lg mt-3 italic">{item.subtitle}</p>
                   <div className="mt-3">
@@ -81,14 +89,6 @@ const HeroSection: FC = () => {
                       Xem Ngay
                     </Button>
                   </div>
-                </div>
-
-                <div className="p-5 flex-1 flex items-center justify-center">
-                  <img
-                    src={item.cover}
-                    alt={item.title}
-                    className="md:w-48 md:h-80 w-32 rounded-md object-cover shadow-lg rotate-12"
-                  />
                 </div>
               </div>
             </div>

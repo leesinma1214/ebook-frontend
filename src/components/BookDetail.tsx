@@ -95,6 +95,15 @@ const BookDetail: FC<Props> = ({ book }) => {
     status,
   } = book;
 
+  // Format date from YYYY/MM/DD to DD/MM/YYYY
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   const notAllowed = status === "unpublished";
 
   return (
@@ -181,11 +190,11 @@ const BookDetail: FC<Props> = ({ book }) => {
           <div className="flex flex-col items-center justify-center space-y-1">
             <FaRegCalendarDays className="sm:text-2xl text-xl" />
             <span className="sm:text-xs text-[10px] truncate">
-              {publishedAt}
+              {formatDate(publishedAt)}
             </span>
           </div>
         </div>
-        
+
         {notAllowed && (
           <div className="pt-6 font-semibold text-lg">
             <p>

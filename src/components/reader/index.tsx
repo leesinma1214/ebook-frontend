@@ -203,7 +203,20 @@ const EpubReader: FC<Props> = ({
   const handleThemeSelection = (mode: ThemeModes) => {
     if (!rendition) return;
 
+    // Re-register themes to force update
+    rendition.themes.register("light", LIGHT_THEME);
+    rendition.themes.register("dark", DARK_THEME);
+
     selectTheme(rendition, mode);
+
+    // Get current location and re-display
+    const currentLocation =
+      rendition.currentLocation() as unknown as RelocatedEvent;
+    if (currentLocation?.start?.cfi) {
+      setTimeout(() => {
+        rendition.display(currentLocation.start.cfi);
+      }, 50);
+    }
   };
 
   const handleFontSizeUpdate = (mode: "increase" | "decrease") => {
@@ -257,7 +270,7 @@ const EpubReader: FC<Props> = ({
       width,
       height,
     });
-    
+
     if (lastLocation) rendition.display(lastLocation);
     else rendition.display();
 

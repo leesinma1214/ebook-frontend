@@ -52,7 +52,11 @@ const HeroSection: FC = () => {
   }
 
   if (books.length === 0) {
-    return null;
+    return (
+      <div className="md:h-96 rounded-medium p-5 bg-[#faf7f2] dark:bg-[#231e1a] flex items-center justify-center">
+        <p className="text-gray-500">Chưa có sách nổi bật</p>
+      </div>
+    );
   }
 
   return (

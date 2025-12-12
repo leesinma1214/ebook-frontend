@@ -13,6 +13,7 @@
     "@heroui/react": "^2.8.5",
     "@reduxjs/toolkit": "^2.10.1",
     "@tailwindcss/vite": "^4.1.17",
+    "@tiptap/extension-link": "^3.13.0",
     "@tiptap/extension-placeholder": "^3.10.7",
     "@tiptap/react": "^3.10.7",
     "@tiptap/starter-kit": "^3.10.7",

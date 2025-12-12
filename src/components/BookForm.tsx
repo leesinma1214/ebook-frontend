@@ -454,15 +454,24 @@ const BookForm: FC<Props> = ({
       <h1 className="pb-6 font-semibold text-2xl w-full">{title}</h1>
 
       <div>
-        <label className={clsx(errors?.file && "text-red-400")} htmlFor="file">
-          <span>Chọn File: </span>
+        <label className={clsx(errors?.file && "text-red-400")}>
+          <span className="block mb-2">Chọn File: </span>
           <input
             accept="application/epub+zip"
             type="file"
             name="file"
             id="file"
             onChange={handleFileChange}
+            className="hidden"
           />
+          <Button
+            as="span"
+            variant="bordered"
+            className="cursor-pointer"
+            color={errors?.file ? "danger" : "default"}
+          >
+            {bookInfo.file ? bookInfo.file.name : "Chọn file EPUB"}
+          </Button>
         </label>
 
         <ErrorList errors={errors?.file} />

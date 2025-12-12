@@ -26,7 +26,6 @@ const NewUserForm: FC<Props> = ({
 }) => {
   const [userInfo, setUserInfo] = useState<NewUserInfo>({ name: "" });
   const [localAvatar, setLocalAvatar] = useState("");
-  const [invalidForm, setInvalidForm] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -47,12 +46,6 @@ const NewUserForm: FC<Props> = ({
     evt.preventDefault();
 
     const formData = new FormData();
-
-    if (userInfo.name.trim().length < 3) {
-      return setInvalidForm(true);
-    } else {
-      setInvalidForm(false);
-    }
 
     formData.append("name", userInfo.name);
     if (userInfo.avatar?.type.startsWith("image")) {
@@ -102,8 +95,6 @@ const NewUserForm: FC<Props> = ({
             variant="bordered"
             value={userInfo.name || name}
             onChange={handleChange}
-            isInvalid={invalidForm}
-            errorMessage="Tên phải có ít nhất 3 ký tự!"
           />
 
           <Button isLoading={busy} type="submit" className="w-full">

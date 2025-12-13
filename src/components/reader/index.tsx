@@ -36,7 +36,8 @@ const DARK_THEME = {
     background: "#2B2B2B !important",
   },
   a: {
-    color: "#f8f8ea !important",
+    color: "#63b3ed !important", // Light blue for better visibility in dark mode
+    background: "transparent !important",
   },
 };
 const LIGHT_THEME = {
@@ -56,7 +57,13 @@ const selectTheme = (rendition: Rendition, mode: ThemeModes) => {
     document.documentElement.classList.add("dark");
   }
 
-  rendition.themes.select(mode);
+  // Register a unique theme name to ensure it is appended last in the DOM
+  // This solves the issue where switching back and forth leaves the old theme (which is lower in DOM) active.
+  const themeName = `${mode}-${Date.now()}`;
+  const themeRules = mode === "light" ? LIGHT_THEME : DARK_THEME;
+
+  rendition.themes.register(themeName, themeRules);
+  rendition.themes.select(themeName);
 };
 
 const getElementSize = (id: string) => {
@@ -203,20 +210,7 @@ const EpubReader: FC<Props> = ({
   const handleThemeSelection = (mode: ThemeModes) => {
     if (!rendition) return;
 
-    // Re-register themes to force update
-    rendition.themes.register("light", LIGHT_THEME);
-    rendition.themes.register("dark", DARK_THEME);
-
     selectTheme(rendition, mode);
-
-    // Get current location and re-display
-    const currentLocation =
-      rendition.currentLocation() as unknown as RelocatedEvent;
-    if (currentLocation?.start?.cfi) {
-      setTimeout(() => {
-        rendition.display(currentLocation.start.cfi);
-      }, 50);
-    }
   };
 
   const handleFontSizeUpdate = (mode: "increase" | "decrease") => {

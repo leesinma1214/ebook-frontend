@@ -4,6 +4,7 @@ import { getAuthState } from "../store";
 import client from "../api/client";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthContext } from "./AuthContext";
+import { useTokenExchange } from "../hooks/useTokenExchange";
 
 interface Props {
   children: ReactNode;
@@ -12,6 +13,7 @@ interface Props {
 const AuthProvider: FC<Props> = ({ children }) => {
   const { profile, status } = useSelector(getAuthState);
   const dispatch = useDispatch();
+  useTokenExchange();
 
   const signOut = async () => {
     try {
@@ -26,6 +28,9 @@ const AuthProvider: FC<Props> = ({ children }) => {
   };
 
   useEffect(() => {
+    // Skip profile fetch if we're exchanging a token (URL has ?token=...)
+    if (new URLSearchParams(window.location.search).has("token")) return;
+
     client
       .get("/auth/profile")
       .then(({ data }) => {

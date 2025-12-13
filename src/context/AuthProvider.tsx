@@ -1,4 +1,4 @@
-import { type FC, type ReactNode, useEffect } from "react";
+import { type FC, type ReactNode, useEffect, useState } from "react";
 import { updateAuthStatus, updateProfile } from "../store/auth";
 import { getAuthState } from "../store";
 import client from "../api/client";
@@ -13,7 +13,10 @@ interface Props {
 const AuthProvider: FC<Props> = ({ children }) => {
   const { profile, status } = useSelector(getAuthState);
   const dispatch = useDispatch();
-  useTokenExchange();
+  const [isExchangingToken, setIsExchangingToken] = useState(false);
+
+  // Pass setter to token exchange hook so it can signal when it's done
+  useTokenExchange(setIsExchangingToken);
 
   const signOut = async () => {
     try {
@@ -28,7 +31,8 @@ const AuthProvider: FC<Props> = ({ children }) => {
   };
 
   useEffect(() => {
-    // Skip profile fetch if we're exchanging a token (URL has ?token=...)
+    // Don't fetch profile if we're exchanging a token
+    if (isExchangingToken) return;
     if (new URLSearchParams(window.location.search).has("token")) return;
 
     client
@@ -41,7 +45,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
         dispatch(updateProfile(null));
         dispatch(updateAuthStatus("unauthenticated"));
       });
-  }, [dispatch]);
+  }, [dispatch, isExchangingToken]);
 
   return (
     <AuthContext.Provider value={{ profile, status, signOut }}>

@@ -71,7 +71,7 @@ const Cart: FC = () => {
               <img
                 src={product.cover}
                 alt={product.title}
-                className="w-28 h-[185px] object-cover rounded"
+                className="w-28 h-46.25 object-cover rounded"
               />
 
               {/* Product Details */}

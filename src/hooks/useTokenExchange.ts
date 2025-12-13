@@ -4,7 +4,9 @@ import client from "../api/client";
 import { useDispatch } from "react-redux";
 import { updateProfile, updateAuthStatus } from "../store/auth";
 
-export const useTokenExchange = () => {
+export const useTokenExchange = (
+  setIsExchanging: (val: boolean) => void
+) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -12,15 +14,20 @@ export const useTokenExchange = () => {
   useEffect(() => {
     const token = searchParams.get("token");
 
-    if (!token) return;
+    if (!token) {
+      setIsExchanging(false);
+      return;
+    }
+
+    setIsExchanging(true);
 
     const exchangeToken = async () => {
       try {
         const { data } = await client.post("/auth/exchange-token", { token });
         dispatch(updateProfile(data.profile));
         dispatch(updateAuthStatus("authenticated"));
-        
-        // Clean URL and redirect
+
+        // Clean URL
         const url = new URL(window.location.href);
         url.searchParams.delete("token");
         url.searchParams.delete("profile");
@@ -29,9 +36,11 @@ export const useTokenExchange = () => {
         console.error("Token exchange failed:", error);
         dispatch(updateAuthStatus("unauthenticated"));
         navigate("/", { replace: true });
+      } finally {
+        setIsExchanging(false);
       }
     };
 
     exchangeToken();
-  }, [searchParams, navigate, dispatch]);
+  }, [searchParams, navigate, dispatch, setIsExchanging]);
 };

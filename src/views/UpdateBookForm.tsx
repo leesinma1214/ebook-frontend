@@ -21,7 +21,7 @@ const UpdateBookForm: FC = () => {
         },
       });
     }
-    toast("Cập nhật sách thành công.", {
+    toast("Book updated successfully.", {
       duration: 5000,
     });
   };
@@ -47,8 +47,8 @@ const UpdateBookForm: FC = () => {
     <BookForm
       onSubmit={handleSubmit}
       initialState={bookInfo}
-      title="Cập nhật sách"
-      submitBtnTitle="Cập nhật"
+      title="Update Book"
+      submitBtnTitle="Update"
     />
   );
 };

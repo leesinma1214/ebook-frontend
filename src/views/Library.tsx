@@ -38,14 +38,14 @@ const Library: FC = () => {
   if (fetching)
     return (
       <div className="text-center pt-10 animate-pulse">
-        <p>Đang tải...</p>
+        <p>Loading...</p>
       </div>
     );
-  
+
   if (!books.length)
     return (
       <div className="text-center pt-10 font-bold text-3xl opacity-60">
-        <p>Thư viện của bạn trống</p>
+        <p>Your library is empty</p>
       </div>
     );
 
@@ -62,7 +62,7 @@ const Library: FC = () => {
               </h1>
 
               <div className="flex items-center space-x-1">
-                <span className="font-semibold">Bởi </span>
+                <span className="font-semibold">By </span>
                 <Link
                   className="font-semibold hover:underline"
                   to={`/author/${book.author.id}`}
@@ -77,7 +77,7 @@ const Library: FC = () => {
                   to={`/read/${book.slug}?title=${book.title}&id=${book.id}`}
                   radius="sm"
                 >
-                  Đọc ngay
+                  Read now
                 </Button>
               </div>
             </div>

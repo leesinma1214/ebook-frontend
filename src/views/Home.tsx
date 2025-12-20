@@ -45,7 +45,7 @@ const Home: FC = () => {
     <div className="space-y-10 px-5 lg:p-0">
       <HeroSection />
       {loading ? (
-        <p className="text-center">Đang tải...</p>
+        <p className="text-center">Loading...</p>
       ) : (
         availableGenres.map((genre) => (
           <BookByGenre key={genre} genre={genre} />

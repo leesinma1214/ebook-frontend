@@ -36,14 +36,14 @@ const BookList: FC<Props> = ({ title, data }) => {
                 <img
                   src={book.cover}
                   alt={book.title}
-                  className="w-32 h-[185px] object-contain rounded"
+                  className="w-32 h-46.25 object-contain rounded"
                 />
 
                 <div className="w-full space-y-2">
                   <p className="font-bold line-clamp-2">{book.title}</p>
 
                   <Chip color="danger" radius="sm" size="sm">
-                    Giảm {calculateDiscount(book.price)}%
+                    {calculateDiscount(book.price)}% Off
                   </Chip>
                 </div>
 
@@ -66,7 +66,7 @@ const BookList: FC<Props> = ({ title, data }) => {
                       </div>
                     </Chip>
                   ) : (
-                    <span>Không có đánh giá</span>
+                    <span>No ratings</span>
                   )}
                 </div>
               </div>

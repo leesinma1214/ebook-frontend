@@ -418,7 +418,7 @@ const EpubReader: FC<Props> = ({
 
       <div className="h-10 flex items-center justify-center opacity-0 group-hover:opacity-100">
         <div className="flex-1 text-center">
-          <p>Trang {`${page.start} - ${page.total}`}</p>
+          <p>Page {`${page.start} - ${page.total}`}</p>
         </div>
 
         {locationBeforeNoteOpen ? (
@@ -428,13 +428,13 @@ const EpubReader: FC<Props> = ({
               handleNavigation(locationBeforeNoteOpen);
             }}
           >
-            Trở lại vị trí trước
+            Back to previous location
           </button>
         ) : null}
 
         {page.start === page.end ? null : (
           <div className="flex-1 text-center">
-            <p>Trang {`${page.end} - ${page.total}`}</p>
+            <p>Page {`${page.end} - ${page.total}`}</p>
           </div>
         )}
       </div>

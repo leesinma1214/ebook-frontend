@@ -35,7 +35,7 @@ const RecommendedSection: FC<Props> = ({ id }) => {
 
   return (
     <div>
-      <BookList data={books} title="Có thể bạn cũng thích" />
+      <BookList data={books} title="You might also like" />
     </div>
   );
 };

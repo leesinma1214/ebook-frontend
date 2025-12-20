@@ -20,7 +20,7 @@ const Container: FC<Props> = ({ children }) => {
 
       <footer className="pb-10 px-4 text-center">
         <p className="text-sm text-gray-500">
-          © {new Date().getFullYear()} DiGiRead. Tất cả các quyền được bảo lưu.
+          © {new Date().getFullYear()} DiGiRead. All rights reserved.
         </p>
       </footer>
     </div>

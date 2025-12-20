@@ -11,14 +11,14 @@ const SearchForm: FC = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
     if (query.trim().length >= 3) navigate("/search?title=" + query);
-    else toast.error("Thứ bạn tìm không hợp lệ.");
+    else toast.error("Invalid search query.");
   };
 
   return (
     <form className="w-full" onSubmit={handleSubmit}>
       <Input
         variant="bordered"
-        placeholder="Tìm kiếm sách..."
+        placeholder="Search books..."
         endContent={
           <button className="focus:outline-none" type="submit">
             <IoMdSearch size={24} />

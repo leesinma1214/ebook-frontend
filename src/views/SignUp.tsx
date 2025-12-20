@@ -40,11 +40,11 @@ const SignUp: FC = () => {
       <div className="flex-1 flex flex-col items-center justify-center md:p-0 p-4">
         <RiMailCheckLine size={80} className="animate-bounce" />
         <p className="text-lg text-center">
-          Email xác nhận đã được gửi! Vui lòng kiểm tra hộp thư đến của bạn.
+          A confirmation email has been sent! Please check your inbox.
         </p>
         <p className="font-semibold">
-          Nếu bạn là người dùng mới, có thể mất một thời gian để email xuất hiện
-          trong hộp thư đến của bạn. Vì vậy, hãy kiên nhẫn.
+          If you're a new user, it may take some time for the email to appear in
+          your inbox. Please be patient.
         </p>
       </div>
     );
@@ -54,8 +54,8 @@ const SignUp: FC = () => {
       <div className="flex flex-col items-center justify-center w-96 border-2 p-5 rounded-md">
         <Book className="w-44 h-44" />
         <h1 className="text-center text-xl font-semibold">
-          Sách là nguồn tri thức vô tận. Đăng ký ngay để khám phá thế giới sách
-          đa dạng và phong phú!
+          Books are an endless source of knowledge. Sign up now to explore a
+          diverse and rich world of books!
         </h1>
 
         <form onSubmit={handleSubmit} className="w-full space-y-6 mt-6">
@@ -71,7 +71,7 @@ const SignUp: FC = () => {
             }}
           />
           <Button isLoading={busy} type="submit" className="w-full">
-            Gửi mã xác nhận
+            Send verification code
           </Button>
         </form>
       </div>

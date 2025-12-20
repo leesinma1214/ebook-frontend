@@ -42,7 +42,7 @@ const UpdateAuthor: FC = () => {
     <AuthorForm
       onSubmit={handleSubmit}
       initialState={profileInfo}
-      btnTitle="Cập Nhật Thông Tin Tác Giả"
+      btnTitle="Update Author Info"
     />
   );
 };

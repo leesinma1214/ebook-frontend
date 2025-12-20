@@ -91,28 +91,28 @@ interface BookToSubmit {
 }
 
 const commonBookSchema = {
-  title: z.string().trim().min(5, "Tiêu đề quá ngắn!"),
-  description: z.string().trim().min(5, "Mô tả quá ngắn!"),
-  genre: z.enum(genreList, { message: "Vui lòng chọn thể loại!" }),
-  language: z.enum(languageList, { message: "Vui lòng chọn ngôn ngữ!" }),
+  title: z.string().trim().min(5, "Title is too short!"),
+  description: z.string().trim().min(5, "Description is too short!"),
+  genre: z.enum(genreList, { message: "Please select a genre!" }),
+  language: z.enum(languageList, { message: "Please select a language!" }),
   publicationName: z
     .string({
       error: (issue) =>
         issue.input === undefined
-          ? "Tên nhà xuất bản không hợp lệ!"
-          : "Không phải chuỗi ký tự",
+          ? "Publication name is invalid!"
+          : "Not a string",
     })
     .trim()
-    .min(3, "Tên nhà xuất bản quá ngắn!"),
+    .min(3, "Publication name is too short!"),
   uploadMethod: z.enum(["aws", "local"], {
-    message: "Phương thức tải lên bị thiếu!",
+    message: "Upload method is required!",
   }),
   publishedAt: z
     .string({
       error: (issue) =>
         issue.input === undefined
-          ? "Ngày xuất bản bị thiếu!"
-          : "Không phải chuỗi ký tự",
+          ? "Published date is required!"
+          : "Not a string",
     })
     .trim(),
   price: z
@@ -121,45 +121,41 @@ const commonBookSchema = {
         .number({
           error: (issue) =>
             issue.input === undefined
-              ? "Giá bán tối thiểu bị thiếu!"
-              : "Không phải số",
+              ? "Minimum price is required!"
+              : "Not a number",
         })
-        .refine((val) => val > 0, "Giá bán tối thiểu bị thiếu!"),
+        .refine((val) => val > 0, "Minimum price is required!"),
       sale: z
         .number({
           error: (issue) =>
-            issue.input === undefined ? "Giá bán bị thiếu!" : "Không phải số",
+            issue.input === undefined
+              ? "Sale price is required!"
+              : "Not a number",
         })
-        .refine((val) => val > 0, "Giá bán bị thiếu!"),
+        .refine((val) => val > 0, "Sale price is required!"),
     })
-    .refine((price) => price.sale <= price.mrp, "Giá bán không hợp lệ!"),
+    .refine((price) => price.sale <= price.mrp, "Sale price is invalid!"),
 };
 
 const fileInfoSchema = z.object({
   name: z
     .string({
       error: (issue) =>
-        issue.input === undefined
-          ? "Tên file bị thiếu!"
-          : "Không phải chuỗi ký tự",
+        issue.input === undefined ? "File name is required!" : "Not a string",
     })
-    .min(1, "Tên file bị thiếu!"),
+    .min(1, "File name is required!"),
   type: z
     .string({
       error: (issue) =>
-        issue.input === undefined
-          ? "Loại file bị thiếu!"
-          : "Không phải chuỗi ký tự",
+        issue.input === undefined ? "File type is required!" : "Not a string",
     })
-    .min(1, "Loại file bị thiếu!"),
+    .min(1, "File type is required!"),
   size: z
     .number({
       error: (issue) =>
-        issue.input === undefined
-          ? "Kích thước file bị thiếu!"
-          : "Không phải số",
+        issue.input === undefined ? "File size is required!" : "Not a number",
     })
-    .refine((val) => val > 0, "Kích thước file không hợp lệ!"),
+    .refine((val) => val > 0, "File size is invalid!"),
 });
 
 const newBookSchema = z.object({
@@ -225,14 +221,14 @@ const BookForm: FC<Props> = ({
       if (!file) {
         return setErrors({
           ...errors,
-          file: ["Chọn file sách để tiếp tục."],
+          file: ["Please select a book file to continue."],
         });
       }
 
       if (file.type !== "application/epub+zip") {
         return setErrors({
           ...errors,
-          file: ["Vui lòng chọn file (.epub) hợp lệ."],
+          file: ["Please select a valid (.epub) file."],
         });
       }
 
@@ -240,7 +236,7 @@ const BookForm: FC<Props> = ({
       if (cover && !cover.type.startsWith("image/")) {
         return setErrors({
           ...errors,
-          cover: ["Vui lòng chọn file bìa hợp lệ."],
+          cover: ["Please select a valid cover file."],
         });
       }
 
@@ -321,7 +317,7 @@ const BookForm: FC<Props> = ({
       if (file && file?.type !== "application/epub+zip") {
         return setErrors({
           ...errors,
-          file: ["Vui lòng chọn file (.epub) hợp lệ."],
+          file: ["Please select a valid (.epub) file."],
         });
       } else {
         setErrors({
@@ -334,7 +330,7 @@ const BookForm: FC<Props> = ({
       if (cover && !cover.type.startsWith("image/")) {
         return setErrors({
           ...errors,
-          cover: ["Vui lòng chọn file bìa hợp lệ."],
+          cover: ["Please select a valid cover file."],
         });
       } else {
         setErrors({
@@ -455,7 +451,7 @@ const BookForm: FC<Props> = ({
 
       <div>
         <label className={clsx(errors?.file && "text-red-400")}>
-          <span className="block mb-2">Chọn File: </span>
+          <span className="block mb-2">Select File: </span>
           <input
             accept="application/epub+zip"
             type="file"
@@ -470,7 +466,7 @@ const BookForm: FC<Props> = ({
             className="cursor-pointer"
             color={errors?.file ? "danger" : "default"}
           >
-            {bookInfo.file ? bookInfo.file.name : "Chọn file EPUB"}
+            {bookInfo.file ? bookInfo.file.name : "Select EPUB file"}
           </Button>
         </label>
 
@@ -490,8 +486,8 @@ const BookForm: FC<Props> = ({
         type="text"
         name="title"
         isRequired
-        label="Tiêu đề sách"
-        placeholder="Nghĩ Giàu và Làm Giàu"
+        label="Book Title"
+        placeholder="Think and Grow Rich"
         value={bookInfo.title}
         onChange={handleTextChange}
         isInvalid={errors?.title ? true : false}
@@ -499,7 +495,7 @@ const BookForm: FC<Props> = ({
       />
 
       <RichEditor
-        placeholder="Mô tả sách..."
+        placeholder="Book Description..."
         isInvalid={errors?.description ? true : false}
         errorMessage={<ErrorList errors={errors?.description} />}
         value={bookInfo.description}
@@ -510,9 +506,9 @@ const BookForm: FC<Props> = ({
       <Input
         name="publicationName"
         type="text"
-        label="Tên nhà xuất bản"
+        label="Publisher Name"
         isRequired
-        placeholder="Nhà xuất bản Penguin"
+        placeholder="Penguin Publishing House"
         value={bookInfo.publicationName}
         onChange={handleTextChange}
         isInvalid={errors?.publicationName ? true : false}
@@ -526,7 +522,7 @@ const BookForm: FC<Props> = ({
           }
         }}
         value={bookInfo.publishedAt ? parseDate(bookInfo.publishedAt) : null}
-        label="Ngày xuất bản"
+        label="Publication Date"
         showMonthAndYearPickers
         isRequired
         isInvalid={errors?.publishedAt ? true : false}
@@ -534,8 +530,8 @@ const BookForm: FC<Props> = ({
       />
 
       <Autocomplete
-        label="Ngôn Ngữ"
-        placeholder="Chọn ngôn ngữ"
+        label="Language"
+        placeholder="Select language"
         defaultSelectedKey={bookInfo.language}
         selectedKey={bookInfo.language}
         onSelectionChange={(key = "") => {
@@ -553,8 +549,8 @@ const BookForm: FC<Props> = ({
       </Autocomplete>
 
       <Autocomplete
-        label="Thể loại"
-        placeholder="Chọn thể loại"
+        label="Genre"
+        placeholder="Select genre"
         defaultSelectedKey={bookInfo.genre}
         selectedKey={bookInfo.genre}
         onSelectionChange={(key = "") => {
@@ -574,14 +570,14 @@ const BookForm: FC<Props> = ({
       <div>
         <div className="bg-default-100 rounded-md py-2 px-3">
           <p className={clsx("text-xs pl-3", errors?.price && "text-red-400")}>
-            Giá*
+            Price*
           </p>
 
           <div className="flex space-x-6 mt-2">
             <Input
               name="mrp"
               type="number"
-              label="Giá Bán Tối Đa"
+              label="Maximum Retail Price"
               isRequired
               placeholder="0.00"
               value={bookInfo.mrp}
@@ -596,7 +592,7 @@ const BookForm: FC<Props> = ({
             <Input
               name="sale"
               type="number"
-              label="Giá Bán"
+              label="Sale Price"
               isRequired
               placeholder="0.00"
               value={bookInfo.sale}
@@ -616,13 +612,13 @@ const BookForm: FC<Props> = ({
       </div>
 
       <RadioGroup
-        label="Chọn trạng thái xuất bản"
+        label="Select Publication Status"
         value={bookInfo.status}
         onValueChange={(status) => setBookInfo({ ...bookInfo, status })}
         orientation="horizontal"
       >
-        <Radio value="published">Đã xuất bản</Radio>
-        <Radio value="unpublished">Chưa xuất bản</Radio>
+        <Radio value="published">Published</Radio>
+        <Radio value="unpublished">Unpublished</Radio>
       </RadioGroup>
 
       <Button isLoading={busy} type="submit" className="w-full">

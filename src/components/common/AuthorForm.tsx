@@ -28,24 +28,25 @@ const newAuthorSchema = z.object({
   name: z
     .string({
       error: (issue) =>
-        issue.input === undefined ? "Điền tên của bạn!" : "Tên không hợp lệ!",
+        issue.input === undefined
+          ? "Please provide your name!"
+          : "Invalid name!",
     })
     .trim()
-    .min(3, "Tên không hợp lệ!"),
+    .min(3, "Invalid name!"),
   about: z
     .string({
       error: (issue) =>
         issue.input === undefined
-          ? "Hãy nói cho độc giả biết bạn là ai..."
-          : "Thông tin không hợp lệ!",
+          ? "Tell readers about yourself..."
+          : "Invalid information!",
     })
     .trim()
-    .min(100, "Hãy viết ít nhất 100 ký tự về bản thân bạn!"),
+    .min(100, "Please write at least 100 characters about yourself!"),
   socialLinks: z
     .array(
       z.url({
-        message:
-          "Các liên kết mạng xã hội chỉ có thể là danh sách các URL hợp lệ!",
+        message: "Social links must be a list of valid URLs!",
       })
     )
     .optional(),
@@ -108,7 +109,7 @@ const AuthorForm: FC<Props> = ({ initialState, btnTitle, onSubmit }) => {
       // Clear errors and submit the data
       setErrors({});
       await onSubmit(result.data);
-      toast.success("Cập nhật thông tin tác giả thành công!");
+      toast.success("Author information updated successfully!");
     } catch (error) {
       parseError(error);
     } finally {
@@ -132,20 +133,20 @@ const AuthorForm: FC<Props> = ({ initialState, btnTitle, onSubmit }) => {
   return (
     <div className="p-4 space-y-6">
       <p>
-        Tên: <span className="font-semibold text-lg">{profile?.name}</span>
+        Name: <span className="font-semibold text-lg">{profile?.name}</span>
       </p>
 
       <RichEditor
         onChange={setAbout}
         value={about}
         editable
-        placeholder="Hãy nói cho độc giả biết bạn là ai..."
+        placeholder="Tell readers about yourself..."
         isInvalid={errors?.about ? true : false}
         errorMessage={<ErrorList errors={errors?.about} />}
       />
 
       <div className="space-y-4">
-        <p className="text-sm font-semibold">Mạng xã hội</p>
+        <p className="text-sm font-semibold">Social links</p>
 
         <ErrorList errors={errors?.socialLinks} />
 

@@ -38,7 +38,7 @@ const AuthorPublicationTable: FC<Props> = ({ authorId, visible }) => {
       setRemovingBookId(removeRequestId);
       const { data } = await client.delete("/book/" + removeRequestId);
       if (data.success) {
-        toast.success("Sách đã được xóa thành công!");
+        toast.success("Book deleted successfully!");
         setBooks((oldBooks) =>
           oldBooks.filter((book) => book.id !== removeRequestId)
         );
@@ -47,12 +47,12 @@ const AuthorPublicationTable: FC<Props> = ({ authorId, visible }) => {
           (t) => (
             <div className="space-y-2">
               <span>
-                Không thể xóa sách vì một trong các lý do sau:
+                Cannot delete the book for one of the following reasons:
               </span>
-              <li>Sách đã được mua bởi người khác.</li>
-              <li>Hoặc nội dung của bạn không hỗ trợ tính năng này.</li>
+              <li>The book has been purchased by another user.</li>
+              <li>Or your content does not support this feature.</li>
               <button className="p-2" onClick={() => toast.dismiss(t.id)}>
-                Đóng
+                Close
               </button>
             </div>
           ),
@@ -77,11 +77,11 @@ const AuthorPublicationTable: FC<Props> = ({ authorId, visible }) => {
   if (!visible) return null;
 
   return (
-    <Table aria-label="Bảng sách của tác giả" shadow="none">
+    <Table aria-label="Author's publications table" shadow="none">
       <TableHeader>
-        <TableColumn className="w-3/5">Tiêu đề</TableColumn>
-        <TableColumn className="w-2/12">Trạng thái</TableColumn>
-        <TableColumn className="w-2/12">Hành động</TableColumn>
+        <TableColumn className="w-3/5">Title</TableColumn>
+        <TableColumn className="w-2/12">Status</TableColumn>
+        <TableColumn className="w-2/12">Actions</TableColumn>
       </TableHeader>
       <TableBody>
         {books.map((book) => {
@@ -97,7 +97,7 @@ const AuthorPublicationTable: FC<Props> = ({ authorId, visible }) => {
                         onMouseDown={handleOnRemoveConfirm}
                         className="underline"
                       >
-                        Vui lòng xác nhận để xóa!
+                        Please confirm to delete!
                       </button>
                     </div>
                   )}

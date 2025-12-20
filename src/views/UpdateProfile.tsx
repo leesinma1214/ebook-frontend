@@ -13,16 +13,16 @@ const UpdateProfile: FC = () => {
   const handleSubmit = async (formData: FormData) => {
     const { data } = await client.put("/auth/profile", formData);
     dispatch(updateProfile(data.profile));
-    toast.success("Cập nhật hồ sơ thành công!");
+    toast.success("Profile updated successfully!");
   };
 
   return (
     <NewUserForm
       name={profile?.name}
       avatar={profile?.avatar}
-      title="Cập nhật hồ sơ"
+      title="Update Profile"
       onSubmit={handleSubmit}
-      btnTitle="Cập nhật"
+      btnTitle="Update"
     />
   );
 };

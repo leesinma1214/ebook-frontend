@@ -18,7 +18,7 @@ const Cart: FC<Props> = ({ itemsCount = 2 }) => {
             <div key={index} className="flex">
               {/* Product Image */}
               <div>
-                <Skeleton className="w-28 h-[185px] rounded" />
+                <Skeleton className="w-28 h-46.25 rounded" />
               </div>
 
               <div className="md:grid grid-cols-6 flex flex-col overflow-hidden">

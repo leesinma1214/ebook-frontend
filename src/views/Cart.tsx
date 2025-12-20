@@ -45,10 +45,10 @@ const Cart: FC = () => {
   if (!totalCount)
     return (
       <div className="lg:p-0 p-5">
-        <h1 className="text-xl mb-6 font-semibold">Giỏ hàng</h1>
+        <h1 className="text-xl mb-6 font-semibold">Cart</h1>
         <div className="p-5 text-center">
           <h1 className="font-semibold text-3xl opacity-40">
-            Giỏ hàng trống!
+            Your cart is empty!
           </h1>
         </div>
       </div>
@@ -57,9 +57,9 @@ const Cart: FC = () => {
   return (
     <div className="lg:p-0 p-5">
       <div className="flex justify-between items-center">
-        <h1 className="text-xl mb-6 font-semibold">Giỏ hàng</h1>
+        <h1 className="text-xl mb-6 font-semibold">Cart</h1>
         <button onClick={clearCart} className="underline">
-          Làm trống giỏ hàng
+          Clear cart
         </button>
       </div>
       <div className="space-y-6">
@@ -81,7 +81,7 @@ const Cart: FC = () => {
 
                   <div className="flex space-x-2">
                     <Chip color="danger">
-                      Giảm {calculateDiscount(product.price)}%
+                      Save {calculateDiscount(product.price)}%
                     </Chip>
                     <h1 className="line-through italic">
                       {formatPrice(Number(product.price.mrp))}
@@ -140,7 +140,7 @@ const Cart: FC = () => {
 
       <div className="md:block flex justify-between items-end">
         <div className="text-right space-y-1">
-          <h1 className="font-semibold text-xl">Tổng giỏ hàng</h1>
+          <h1 className="font-semibold text-xl">Cart Total</h1>
           <Divider />
           <p className="line-through italic">{formatPrice(subTotal)}</p>
           <p className="font-semibold text-xl">{formatPrice(totalPrice)}</p>
@@ -155,12 +155,12 @@ const Cart: FC = () => {
             startContent={<MdOutlineShoppingCartCheckout size={18} />}
             onPress={handleCheckout}
           >
-            Thanh toán
+            Checkout
           </Button>
           <div className="mt-3">
             <Chip size="sm">
               <p>
-                Bạn đã tiết kiệm tổng cộng{" "}
+                You saved a total of{" "}
                 {calculateDiscount({
                   mrp: subTotal.toFixed(2),
                   sale: totalPrice.toFixed(2),

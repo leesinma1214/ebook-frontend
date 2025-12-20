@@ -50,7 +50,7 @@ const CartProvider: FC<Props> = ({ children }) => {
       client
         .post("/cart/clear")
         .then(() => {
-          toast.success("Giỏ hàng đã được làm trống thành công.");
+          toast.success("Cart cleared successfully.");
         })
         .catch(parseError)
         .finally(() => {
@@ -73,7 +73,7 @@ const CartProvider: FC<Props> = ({ children }) => {
           items: [{ product: item.product.id, quantity: item.quantity }],
         })
         .then(({ data }) => {
-          toast.success("Sách đã được thêm vào giỏ hàng.");
+          toast.success("Book added to cart.");
           dispatch(updateCartId(data.cart));
         })
         .catch(parseError)

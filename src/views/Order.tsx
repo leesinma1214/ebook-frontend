@@ -45,9 +45,12 @@ const Orders: FC = () => {
     fetchOrders();
   }, []);
 
-  const formatVietnameseDate = (date: string) => {
+  const formatDate = (date: string) => {
     const d = new Date(date);
-    return `Ngày ${d.getDate()} Tháng ${d.getMonth() + 1} Năm ${d.getFullYear()}`;
+    const day = d.getDate().toString().padStart(2, "0");
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
+    const year = d.getFullYear();
+    return `${month}/${day}/${year}`;
   };
 
   if (pending) return <Skeletons.Orders />;
@@ -57,18 +60,18 @@ const Orders: FC = () => {
       <div className="p-5 lg:p-0">
         <h1 className="text-xl font-semibold mb-6">Your Orders</h1>
         <div className="text-center pt-10 font-bold text-3xl opacity-60">
-          <p>{"Bạn không có đơn hàng nào."}</p>
+          <p>{"You have no orders."}</p>
         </div>
       </div>
     );
 
   return (
     <div className="p-5 lg:p-0">
-      <h1 className="text-xl font-semibold mb-6">Đơn hàng của bạn</h1>
+      <h1 className="text-xl font-semibold mb-6">Your Orders</h1>
       {orders?.map((order) => {
         return (
           <div key={order.id}>
-            <DividerWithTitle title={formatVietnameseDate(order.date)} />
+            <DividerWithTitle title={formatDate(order.date)} />
             {order.orderItem.map((product) => {
               return (
                 <div key={product.id}>
@@ -92,7 +95,7 @@ const Orders: FC = () => {
                           {formatPrice(Number(product.price))}
                         </p>
                         <IoCloseOutline />
-                        <p>{product.qty} cuốn</p>
+                        <p>{product.qty} copies</p>
                       </div>
 
                       <Chip color="danger" radius="sm" className="mt-2">
@@ -110,9 +113,9 @@ const Orders: FC = () => {
 
             <div className="text-right space-y-1 py-6">
               <p className="font-semibold text-xl">
-                Tổng: {formatPrice(Number(order.totalAmount))}
+                Total: {formatPrice(Number(order.totalAmount))}
               </p>
-              <p>Trạng thái thanh toán: {order.paymentStatus?.toUpperCase()}</p>
+              <p>Payment status: {order.paymentStatus?.toUpperCase()}</p>
             </div>
           </div>
         );

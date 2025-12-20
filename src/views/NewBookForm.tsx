@@ -21,10 +21,8 @@ const NewBookForm: FC = () => {
       });
 
       toast(
-        "Sách của bạn đang được xử lý và sẽ sớm xuất bản. Vui lòng kiểm tra trong mục Quản lý sách!",
-        {
-          duration: 5000,
-        }
+        "Your book is being processed and will be published soon. Please check Manage Books for updates.",
+        { duration: 5000 }
       );
     }
     navigate("/update-book/" + res.data.slug);
@@ -33,8 +31,8 @@ const NewBookForm: FC = () => {
   return (
     <BookForm
       onSubmit={handleSubmit}
-      title="Xuất bản sách mới"
-      submitBtnTitle="Xuất bản"
+      title="Publish a new book"
+      submitBtnTitle="Publish"
     />
   );
 };

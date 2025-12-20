@@ -35,7 +35,7 @@ const PosterSelector: FC<Props> = ({
           {src ? (
             <img src={src} alt="poster" className="object-fill" />
           ) : (
-            <p className="text-sm">Chọn Ảnh Bìa</p>
+            <p className="text-sm">Select Poster Image</p>
           )}
         </div>
         {fileName ? <p className="w-28 text-sm truncate">{fileName}</p> : null}

@@ -42,11 +42,11 @@ const HeroSection: FC = () => {
         setLoading(false);
       });
   }, []);
-
+  // change to english
   if (loading) {
     return (
       <div className="md:h-96 rounded-medium p-5 bg-[#faf7f2] dark:bg-[#231e1a] flex items-center justify-center">
-        <p>Đang tải...</p>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -54,7 +54,7 @@ const HeroSection: FC = () => {
   if (books.length === 0) {
     return (
       <div className="md:h-96 rounded-medium p-5 bg-[#faf7f2] dark:bg-[#231e1a] flex items-center justify-center">
-        <p className="text-gray-500">Chưa có sách nổi bật</p>
+        <p className="text-gray-500">No featured books available</p>
       </div>
     );
   }
@@ -86,7 +86,7 @@ const HeroSection: FC = () => {
                       as={Link}
                       to={`/book/${item.slug}`}
                     >
-                      Xem Ngay
+                      View Now
                     </Button>
                   </div>
                 </div>

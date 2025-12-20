@@ -39,7 +39,7 @@ const AuthorPage: FC = () => {
   if (fetching)
     return (
       <div className="text-center pt-10, animate-pulse">
-        <p>Đang tải...</p>
+        <p>Loading...</p>
       </div>
     );
 
@@ -48,7 +48,7 @@ const AuthorPage: FC = () => {
       <User name={authorInfo?.name} />
 
       <div className="py-6 pl-10">
-        <h1 className="font-semibold text-lg">Trang mạng xã hội:</h1>
+        <h1 className="font-semibold text-lg">Social links:</h1>
         <div className="flex items-center space-x-2">
           {authorInfo?.socialLinks.map((link) => {
             const { host } = new URL(link);
@@ -72,7 +72,7 @@ const AuthorPage: FC = () => {
       </div>
 
       <div className="mt-6">
-        <BookList title="Sách của tác giả" data={authorInfo?.books || []} />
+        <BookList title="Author's books" data={authorInfo?.books || []} />
       </div>
     </div>
   );

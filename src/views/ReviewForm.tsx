@@ -24,7 +24,7 @@ const ReviewForm: FC = () => {
     evt.preventDefault();
 
     if (!selectedRatings.length)
-      return toast.error("Vui lòng chọn đánh giá sao.");
+      return toast.error("Please select a star rating.");
 
     try {
       setLoading(true);
@@ -34,7 +34,7 @@ const ReviewForm: FC = () => {
         content,
       });
 
-      toast.success("Cảm ơn bạn đã để lại đánh giá.");
+      toast.success("Thank you for your review.");
     } catch (error) {
       parseError(error);
     } finally {
@@ -66,7 +66,7 @@ const ReviewForm: FC = () => {
   if (fetching)
     return (
       <div className="text-center p-5">
-        <p>Vui lòng chờ...</p>
+        <p>Please wait...</p>
       </div>
     );
 
@@ -94,12 +94,12 @@ const ReviewForm: FC = () => {
       <RichEditor
         value={content}
         onChange={setContent}
-        placeholder="Viết thứ gì đấy về sách..."
+        placeholder="Write something about the book..."
         editable
       />
 
       <Button isLoading={loading} type="submit">
-        Đăng đánh giá
+        Submit review
       </Button>
     </form>
   );

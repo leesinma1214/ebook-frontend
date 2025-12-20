@@ -33,15 +33,15 @@ const ReviewSection: FC<Props> = ({ id, title, reviews }) => {
 
         <div className="mt-6">
           <p className="text-xl">
-            Hãy là người đầu tiên{" "}
+            Be the first to{" "}
             <Link to={`/rate/${id}`} className="underline font-semibold">
-              viết đánh giá
+              write a review
             </Link>
           </p>
         </div>
       </div>
     );
-    
+
   return (
     <div className="pb-20">
       <DividerWithTitle title={title} />

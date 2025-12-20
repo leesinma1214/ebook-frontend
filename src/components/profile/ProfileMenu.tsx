@@ -53,27 +53,27 @@ const ProfileMenu: FC<Props> = ({ profile, signOut }) => {
               className="h-14 gap-2"
             >
               <div>
-                <p className="font-bold">Đăng nhập bằng</p>
+                <p className="font-bold">Logged in as</p>
                 <p className="font-bold">{email}</p>
               </div>
             </DropdownItem>
             <DropdownItem key="my_library" textValue="library" className="p-0">
-              <DropdownLink title="Thư Viện" to="/library" />
+              <DropdownLink title="Library" to="/library" />
             </DropdownItem>
             <DropdownItem textValue="orders" key="orders" className="p-0">
-              <DropdownLink title="Giỏ Hàng" to="/orders" />
+              <DropdownLink title="Cart" to="/orders" />
             </DropdownItem>
           </DropdownSection>
 
           {role === "author" ? (
             <DropdownSection showDivider>
-              <DropdownItem key="analytics">Thống kê</DropdownItem>
+              <DropdownItem key="analytics">Analytics</DropdownItem>
               <DropdownItem
                 textValue="Create New Book"
                 key="create_new_book"
                 className="p-0"
               >
-                <DropdownLink title="Tạo sách mới" to="/create-new-book" />
+                <DropdownLink title="Create New Book" to="/create-new-book" />
               </DropdownItem>
             </DropdownSection>
           ) : (
@@ -85,13 +85,13 @@ const ProfileMenu: FC<Props> = ({ profile, signOut }) => {
           )}
 
           <DropdownItem className="p-0" textValue="Profile item" key="profile">
-            <DropdownLink title="Trang cá nhân" to="/profile" />
+            <DropdownLink title="Profile" to="/profile" />
           </DropdownItem>
           <DropdownItem key="help_and_feedback">
-            Trợ giúp & Phản hồi
+            Help & Feedback
           </DropdownItem>
           <DropdownItem onClick={signOut} key="logout" color="danger">
-            Đăng xuất
+            Sign Out
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

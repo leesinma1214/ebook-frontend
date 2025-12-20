@@ -48,7 +48,7 @@ const PaymentSuccess: FC = () => {
   return (
     <div className="lg:p-0 p-5">
       <h1 className="font-semibold text-2xl">
-        Đơn hàng của bạn đã được thanh toán thành công!
+        Your order has been paid successfully!
       </h1>
       <div className="p-5 flex flex-col items-center">
         {order?.orders.map((item) => {
@@ -69,8 +69,8 @@ const PaymentSuccess: FC = () => {
                     {item.title}
                   </Link>
 
-                  <p>Giá: {formatPrice(Number(item.price))}</p>
-                  <p>Số lượng: {item.qty}</p>
+                  <p>Price: {formatPrice(Number(item.price))}</p>
+                  <p>Quantity: {item.qty}</p>
                 </div>
               </div>
 
@@ -80,7 +80,7 @@ const PaymentSuccess: FC = () => {
         })}
 
         <div className="w-96 flex items-center justify-between">
-          <p className="font-bold">Tổng cộng:</p>
+          <p className="font-bold">Total:</p>
           <p className="font-bold">{formatPrice(Number(order?.totalAmount))}</p>
         </div>
       </div>

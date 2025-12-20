@@ -12,7 +12,7 @@ const ProfileOptions: FC = () => {
     <ProfileMenu profile={profile} signOut={signOut} />
   ) : (
     <Button as={Link} to="sign-up" variant="bordered">
-      Đăng nhập / Đăng ký
+      Log In / Sign Up
     </Button>
   );
 };

@@ -95,13 +95,13 @@ const BookDetail: FC<Props> = ({ book }) => {
     status,
   } = book;
 
-  // Format date from YYYY/MM/DD to DD/MM/YYYY
+  // Format date from YYYY/MM/DD to MM/DD/YYYY
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${month}/${day}/${year}`;
   };
 
   const notAllowed = status === "unpublished";
@@ -147,7 +147,7 @@ const BookDetail: FC<Props> = ({ book }) => {
             </Chip>
           ) : (
             <Chip>
-              <span className="text-xs">Không có đánh giá</span>
+              <span className="text-xs">No reviews</span>
             </Chip>
           )}
 
@@ -155,7 +155,7 @@ const BookDetail: FC<Props> = ({ book }) => {
             to={`/rate/${id}`}
             className="font-normal text-sm hover:underline"
           >
-            Thêm đánh giá
+            Add review
           </Link>
         </div>
 
@@ -199,7 +199,7 @@ const BookDetail: FC<Props> = ({ book }) => {
           <div className="pt-6 font-semibold text-lg">
             <p>
               {
-                "Cuốn sách này không có sẵn để bán! Vui lòng liên hệ với quản trị viên để biết thêm chi tiết."
+                "This book is not available for sale! Please contact the administrator for more details."
               }
             </p>
           </div>
@@ -212,7 +212,7 @@ const BookDetail: FC<Props> = ({ book }) => {
               as={Link}
               to={`/read/${slug}?title=${title}&id=${id}`}
             >
-              Đọc ngay
+              Read now
             </Button>
           ) : (
             <>
@@ -224,7 +224,7 @@ const BookDetail: FC<Props> = ({ book }) => {
                 disabled={notAllowed}
                 className={clsx(notAllowed && "cursor-not-allowed")}
               >
-                Thêm vào giỏ hàng
+                Add to cart
               </Button>
               <Button
                 onPress={handleBuyNow}
@@ -233,7 +233,7 @@ const BookDetail: FC<Props> = ({ book }) => {
                 disabled={notAllowed}
                 className={clsx(notAllowed && "cursor-not-allowed")}
               >
-                Mua ngay
+                Buy now
               </Button>
             </>
           )}

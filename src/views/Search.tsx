@@ -25,16 +25,17 @@ const Search: FC = () => {
       .finally(() => setBusy(false));
   }, [title]);
 
-  const heading = `Kết quả tìm kiếm: ${title}`;
+  // Search results heading
+  const heading = `Search results: ${title}`;
 
-  if (busy) return <LoadingSpinner label="Đang tìm kiếm..." />;
+  if (busy) return <LoadingSpinner label="Searching..." />;
 
   if (notFound)
     return (
       <div className="px-4 py-10">
         <DividerWithTitle title={heading} />
         <p className="text-center p-5 text-2xl font-semibold opacity-50">
-          Không tìm thấy kết quả...
+          No results found...
         </p>
       </div>
     );

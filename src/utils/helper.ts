@@ -34,7 +34,7 @@ export const parseError = (error: unknown) => {
     return toast(error.message, { position: "top-right" });
   }
 
-  toast("Ui, có lỗi xảy ra rồi, bạn thử lại sau nhé!", {
+  toast("Oops, something went wrong. Please try again later!", {
     position: "top-right",
   });
 };

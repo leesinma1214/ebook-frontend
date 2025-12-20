@@ -62,23 +62,23 @@ const MobileNav: FC<Props> = ({
             <ul className="p-4 space-y-4">
               <li>
                 <Link onClick={onClose} to="/profile">
-                  Trang cá nhân
+                  Profile
                 </Link>
               </li>
-            <li>
+              <li>
                 <Link onClick={onClose} to="/orders">
-                  Đơn hàng
+                  Orders
                 </Link>
               </li>
               <li>
                 <Link onClick={onClose} to="/library">
-                  Thư viện
+                  Library
                 </Link>
               </li>
               {isAuthor && (
                 <li>
                   <Link onClick={onClose} to="/create-new-book">
-                    Tạo sách mới
+                    Create new book
                   </Link>
                 </li>
               )}
@@ -88,7 +88,7 @@ const MobileNav: FC<Props> = ({
           {isLoggedIn && (
             <div>
               <Button onPress={onLogout} radius="sm" className="w-full">
-                Đăng xuất
+                Logout
               </Button>
             </div>
           )}
@@ -102,7 +102,7 @@ const MobileNav: FC<Props> = ({
                 to="sign-up"
                 variant="bordered"
               >
-                Đăng ký / Đăng nhập
+                Sign up / Log in
               </Button>
             </div>
           )}

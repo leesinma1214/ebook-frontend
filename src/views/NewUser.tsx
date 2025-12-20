@@ -27,8 +27,8 @@ const NewUser: FC = () => {
   return (
     <NewUserForm
       onSubmit={handleSubmit}
-      title="Sắp được rồi! Hãy điền thêm thông tin để hoàn tất hồ sơ của bạn."
-      btnTitle="Đăng ký"
+      title="You're almost there! Please provide additional information to complete your profile."
+      btnTitle="Sign up"
     />
   );
 };

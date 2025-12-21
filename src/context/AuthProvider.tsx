@@ -41,7 +41,11 @@ const AuthProvider: FC<Props> = ({ children }) => {
         dispatch(updateProfile(data.profile));
         dispatch(updateAuthStatus("authenticated"));
       })
-      .catch(() => {
+      .catch((error) => {
+        // Ignore 401 errors during token exchange process
+        if (error?.response?.status === 401 && isExchangingToken) {
+          return;
+        }
         dispatch(updateProfile(null));
         dispatch(updateAuthStatus("unauthenticated"));
       });

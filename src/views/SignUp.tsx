@@ -68,6 +68,7 @@ const SignUp: FC = () => {
             value={email}
             onChange={({ target }) => {
               setEmail(target.value);
+              setInvalidForm(false);
             }}
           />
           <Button isLoading={busy} type="submit" className="w-full">

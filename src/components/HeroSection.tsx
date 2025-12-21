@@ -42,7 +42,7 @@ const HeroSection: FC = () => {
         setLoading(false);
       });
   }, []);
-  // change to english
+
   if (loading) {
     return (
       <div className="md:h-96 rounded-medium p-5 bg-[#faf7f2] dark:bg-[#231e1a] flex items-center justify-center">
@@ -60,42 +60,62 @@ const HeroSection: FC = () => {
   }
 
   return (
-    <div className="md:h-96 rounded-medium p-5 bg-[#faf7f2] dark:bg-[#231e1a]">
-      <Slider {...settings}>
-        {books.map((item) => {
-          return (
-            <div key={item.slug}>
-              <div className="md:flex justify-between">
-                <div className="p-5 flex-1 flex items-center justify-center md:order-2">
-                  <img
-                    src={item.cover}
-                    alt={item.title}
-                    className="md:w-48 md:h-80 w-32 rounded-md object-cover shadow-lg rotate-12"
-                  />
-                </div>
+    <>
+      <style>{`
+        .hero-slider .slick-dots li button:before {
+          color: #9ca3af;
+          opacity: 0.5;
+        }
+        .hero-slider .slick-dots li.slick-active button:before {
+          color: #000000;
+          opacity: 1;
+        }
+        .dark .hero-slider .slick-dots li button:before {
+          color: #6b7280;
+          opacity: 0.5;
+        }
+        .dark .hero-slider .slick-dots li.slick-active button:before {
+          color: #ffffff;
+          opacity: 1;
+        }
+      `}</style>
+      <div className="hero-slider md:h-96 rounded-medium p-5 bg-[#faf7f2] dark:bg-[#231e1a]">
+        <Slider {...settings}>
+          {books.map((item) => {
+            return (
+              <div key={item.slug}>
+                <div className="md:flex justify-between">
+                  <div className="p-5 flex-1 flex items-center justify-center md:order-2">
+                    <img
+                      src={item.cover}
+                      alt={item.title}
+                      className="md:w-48 md:h-80 w-32 rounded-md object-cover shadow-lg rotate-12"
+                    />
+                  </div>
 
-                <div className="flex-1 flex flex-col justify-center p-5 md:order-1">
-                  <h1 className="lg:text-6xl text-3xl">{item.slogan}</h1>
-                  <p className="md:text-lg mt-3 italic">{item.subtitle}</p>
-                  <div className="mt-3">
-                    <Button
-                      radius="sm"
-                      color="danger"
-                      variant="bordered"
-                      endContent={<FaArrowRightLong />}
-                      as={Link}
-                      to={`/book/${item.slug}`}
-                    >
-                      View Now
-                    </Button>
+                  <div className="flex-1 flex flex-col justify-center p-5 md:order-1">
+                    <h1 className="lg:text-6xl text-3xl">{item.slogan}</h1>
+                    <p className="md:text-lg mt-3 italic">{item.subtitle}</p>
+                    <div className="mt-3">
+                      <Button
+                        radius="sm"
+                        color="danger"
+                        variant="bordered"
+                        endContent={<FaArrowRightLong />}
+                        as={Link}
+                        to={`/book/${item.slug}`}
+                      >
+                        View Now
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </Slider>
-    </div>
+            );
+          })}
+        </Slider>
+      </div>
+    </>
   );
 };
 

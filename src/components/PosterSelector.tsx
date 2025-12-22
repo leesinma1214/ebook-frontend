@@ -28,14 +28,14 @@ const PosterSelector: FC<Props> = ({
 
         <div
           className={clsx(
-            "hover:bg-default-200 transition w-28 h-32 flex items-center justify-center rounded-md overflow-hidden cursor-pointer",
+            "hover:bg-default-200 transition w-28 h-32 flex items-center justify-center rounded-md overflow-hidden cursor-pointer p-2",
             isInvalid ? "ring-2 ring-red-400" : "bg-default-100"
           )}
         >
           {src ? (
             <img src={src} alt="poster" className="object-fill" />
           ) : (
-            <p className="text-sm">Select Poster Image</p>
+            <p className="text-sm text-center">Select Poster Image</p>
           )}
         </div>
         {fileName ? <p className="w-28 text-sm truncate">{fileName}</p> : null}

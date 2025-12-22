@@ -105,6 +105,7 @@ const BookDetail: FC<Props> = ({ book }) => {
   };
 
   const notAllowed = status === "unpublished";
+  const discount = calculateDiscount(price);
 
   return (
     <div className="md:flex">
@@ -131,10 +132,14 @@ const BookDetail: FC<Props> = ({ book }) => {
 
         <div className="mt-3 flex items-center space-x-2">
           <p className="font-semibold">{formatPrice(Number(price.sale))}</p>
-          <p className="line-through italic">
-            {formatPrice(Number(price.mrp))}
-          </p>
-          <Chip color="danger">{`${calculateDiscount(price)}% Off`}</Chip>
+          {discount > 0 && (
+            <>
+              <p className="line-through italic">
+                {formatPrice(Number(price.mrp))}
+              </p>
+              <Chip color="danger">{`${discount}% Off`}</Chip>
+            </>
+          )}
         </div>
 
         <div className="mt-3 flex items-center space-x-2 font-semibold">

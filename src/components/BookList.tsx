@@ -30,6 +30,8 @@ const BookList: FC<Props> = ({ title, data }) => {
 
       <div className="mt-6 grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-5">
         {data.map((book) => {
+          const discount = calculateDiscount(book.price);
+
           return (
             <Link key={book.id} to={`/book/${book.slug}`}>
               <div className="flex flex-col items-center space-y-2">
@@ -42,9 +44,11 @@ const BookList: FC<Props> = ({ title, data }) => {
                 <div className="w-full space-y-2">
                   <p className="font-bold line-clamp-2">{book.title}</p>
 
-                  <Chip color="danger" radius="sm" size="sm">
-                    {calculateDiscount(book.price)}% Off
-                  </Chip>
+                  {discount > 0 && (
+                    <Chip color="danger" radius="sm" size="sm">
+                      {discount}% Off
+                    </Chip>
+                  )}
                 </div>
 
                 <div className="w-full">
@@ -52,9 +56,11 @@ const BookList: FC<Props> = ({ title, data }) => {
                     <p className="font-bold">
                       {formatPrice(Number(book.price.sale))}
                     </p>
-                    <p className="line-through">
-                      {formatPrice(Number(book.price.mrp))}
-                    </p>
+                    {discount > 0 && (
+                      <p className="line-through">
+                        {formatPrice(Number(book.price.mrp))}
+                      </p>
+                    )}
                   </div>
                 </div>
 
